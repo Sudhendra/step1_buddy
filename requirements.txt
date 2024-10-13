@@ -2,4 +2,5 @@ transformers
 openai
 torch
 opencv-python-headless
+scikit-learn
 
