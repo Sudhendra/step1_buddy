@@ -14,7 +14,7 @@ from requests.exceptions import RequestException
 from openai import OpenAI
 
 # Set up OpenAI client
-key = st.text_input("Enter your openai API key:")
+key = st.text_input("Enter your key:")
 client = OpenAI(api_key=key)
 
 # Check for GPU availability
@@ -107,14 +107,43 @@ def preprocess_data(video_data: List[Dict]) -> (np.ndarray, List[Dict]):
 
 # Extract frame from video at specific timestamp
 def extract_frame(video_path: str, timestamp: float) -> Image.Image:
-    cap = cv2.VideoCapture(video_path)
-    cap.set(cv2.CAP_PROP_POS_MSEC, timestamp * 1000)
-    ret, frame = cap.read()
-    cap.release()
-    
-    if ret:
-        return Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-    else:
+    if not os.path.exists(video_path):
+        st.error(f"Video file not found: {video_path}")
+        return None
+
+    try:
+        cap = cv2.VideoCapture(video_path)
+        if not cap.isOpened():
+            st.error(f"Failed to open video file: {video_path}")
+            return None
+
+        # Get video properties
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        duration = total_frames / fps if fps > 0 else 0
+
+        st.info(f"Video properties: FPS={fps}, Total Frames={total_frames}, Duration={duration:.2f}s")
+
+        if timestamp > duration:
+            st.warning(f"Timestamp {timestamp}s exceeds video duration {duration:.2f}s. Using last frame.")
+            timestamp = duration
+
+        frame_number = int(timestamp * fps)
+        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+        
+        ret, frame = cap.read()
+        cap.release()
+        
+        if ret:
+            return Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        else:
+            st.warning(f"Could not extract frame at timestamp {timestamp}s (frame {frame_number}) from {video_path}")
+            return None
+    except cv2.error as e:
+        st.error(f"OpenCV error: {str(e)}")
+        return None
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {str(e)}")
         return None
 
 # Main Streamlit app
