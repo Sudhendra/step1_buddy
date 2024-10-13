@@ -14,7 +14,7 @@ from requests.exceptions import RequestException
 from openai import OpenAI
 
 # Set up OpenAI client
-key = st.text_input("Enter your key:")
+key = st.text_input("Enter your openai API key:")
 client = OpenAI(api_key=key)
 
 # Check for GPU availability
