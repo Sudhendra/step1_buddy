@@ -1179,468 +1179,468 @@
     "text": "hello everyone and Welcome to our module on the compliment system",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 0.0,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the complement system is a collection of proteins that circulates in the bloodstream it can also be found in tissues and these proteins can bind to pathogens that get inside the body especially bacteria once they bind to pathogens like bacteria the result is bacterial cell death and they go by various names like C3 for complement protein C and C5 and C6 sometimes they also have a letter like c3a and c3b",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 3.855,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "of all the different compliment proteins the most abundant is C3 it synthesized by the liver and it can be converted to c3b and when stable c3b binds to bacteria this leads to bacterial cell death and all the different Pathways of activation of the complement system involve the conversion of C3 to c3b",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 28.701,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the complement system can be hard to remember and even to understand as a medical student my suggestion for the way to do this is to think of the entire complement system as the conversion of C3 to c3b and then c3b leading to the destruction of bacteria as we will see there are three different Pathways by which C3 can be converted to c3b one is called the alternative pathway the other is the classical and the other is the lectin",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 48.16,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "once stable c3b is formed by any one of these three Pathways the next steps in complement activation are all the same they involve formation of something called the membrane attack complex which leads to bacterial cell death",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 72.938,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "so let's talk about those three Pathways of C3 to c3b conversion the first one is the easiest one to understand and this is the alternative pathway and the reason it's easy to understand is because this simply involves the spontaneous conversion of C3 to c3b there is a low level of spontaneous conversion to c3b happening all the time in the blood and the tissues now if c3b is not stabilized by binding to something it will be rapidly destroyed in fact it gets destroyed in less than a second",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 85.883,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "however c3b can sometimes be stabilized if it binds to Amino and hydroxyl groups these are commonly found on the surfaces of pathogens this is an amino group here this is a hydroxyl group here and there are lots of these sticking out of the surfaces of common pathogens",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 114.136,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "as an example of some of the surfaces that combined in stabilized c3b these include bacterial lipopolysaccharides fungal cell walls and viral envelopes so if one of these is present inside the body c3b will stick to it and become stabilized and thus you will have the conversion of C3 to c3b Via the alternative pathway",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 129.336,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the reason stable c3b is so effective via the alternative pathway is because stable c3b can create more of itself via a positive feedback loop the way this works is that stable c3b bind to something called compliment protein B and then there is another compliment protein called protein D which can clip be that is bound to c3b this creates a molecule called c3bb and c3bb is a C3 convertase which can make more c3b so the result of all this is that once the alternative pathway creates stable c3b The Binding to one of those surfaces I just mentioned the stable c3b can cleave more c3b the result is a rapid accumulation of lots of c3b on surfaces and I've drawn a picture of this down here to help you understand once you get the alternative pathway protein's converter and then you get a positive feedback loop",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 148.956,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "some alternative pathway c3b can bind to our own cells and if left unchecked it could activate the complement system and lead to cell death of our own human cells but this doesn't happen and one of the reasons is because of something called Factor h factor H is a plasma glycoprotein that is synthesized in the liver and it blocks the alternative pathway on our own host cells our cells have developed mechanisms to pull factor H from the plasma and use it to protect themselves against the alternative Pathways does a couple of things that protect your own cells that can accelerate the decay of C3 convert taste that c3bb I just told you about in addition Factor H can cleave and inactivate surface bounce c3b",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 206.14,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "what's interesting is there are some cancer cells and bacteria that have evolved mechanisms to pull Factory from the plasma and use it themselves to evade the alternative pathway some of the key pathogens that can do this include H influenza and that's easy to remember because it starts with the letter H also in my Syria meningitis many streptococci and pseudomonas and there's a nice review article down on the bottom of the screen here if you want to read more about all the mechanisms by which cancer cells and bacteria use Factor H to evade the alternative pathway",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 247.061,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the next pathway by which C3 converts to c3b is called the lectin pathway there is a molecule that circulates in Blood and tissues called mannose binding lectin it's produced by the liver and its circulates together with proteases called Manos Associated Syrian proteases or Maps these complexes of The Binding lectin Together with the proteases combined to surfaces that contain Manos and many microbes have surfaces that contain Manos once the complex is bind they will convert a compliment protein called C2 into c2b they will also convert a compliment protein called C4 into c4b and then the C2 and c4b will bind together to form and this molecule is a C3 convertase a C3 convertase is an enzyme that can convert c3b so once you have will begin to form and that leads to formation of the Mack and destruction of bacteria",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 276.761,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the alternative and the lectin pathways are both examples of innate immunity they do not involve the Adaptive immune system and they don't involve B cells or T cells or antibodies but the third and final Way by which C3 gets converted to c3b does involve adaptive immunity this pathway is called the classical pathway and it has to do with complement activation by way of antigen-antibody complexes some antigen-antibody complexes can bind a complement protein called C1 we'll talk more about C1 in a minute but C1 can cleave C2 into c2b and a conclave C4 into c4b and then once again just like in the pathway c241 component of the complement system which is involved in the classic pathway it's a very important protein C1 is a large complex and it consists of several different molecules together it consists of C11 here it's a very large molecule and it contains to see our portion right here and this is the C1 inhibitor",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 335.194,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "in order for C1 to activate via the classic pathway it must bind to two FC portions of antibodies which are close together when two FC portions bind to the C1 complex the C1 inhibitor will fall off",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 407.336,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "once this happens c1r and c1s become activated and then they will create that C3 converter which is c2b and c4b",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 421.728,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "why don't you understand this principle that two FC portions have to be close together in order to activate C1 and the classic pathway you can then begin to understand why IGM is such a good compliment activator so the IGM antibody is a pentamer it's got five monomers that are bound together like this with their Fab portion sticking out and as a result of having five monomers stuck together you have lots of FC portions right near each other here therefore it's very easy for IGM to bind to see one and knock off the inhibitor molecule with all these FC portions close together Iggy is it okay but it's not as good as IGM and that's because in order for IGG to activate the complement system you have to get two IGG molecules close together so that their FC portions are near each other and then they can find and knock off that Inhibitors so that C11",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 429.884,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "you may have heard of a molecule called C-reactive protein or CRP it's called an acute phase reactant because it's level rises in the setting of inflammation deliver synthesizes CRP in response to il-6 secretion from macrophages and C-reactive protein has been shown to bind to bacterial polysaccharides in fact it gets its name because it binds to see polysaccharides of bacteria and you should know that C-reactive protein has been shown to have some unusual effects on the classic pathway it can activate the early classical pathway by binding to see one and cause consumption of C3 and C4 and it can generate some c3b however interestingly it does not activate the late pathway so we'll talk about formation of the Mack and consumption of C5 to 9 in a minute but all you need to know right now is that CRP has been shown to activate this portion of compliment it's very unlikely you'll be asked on step one exactly what CRP does in terms of the complement system because it's functions are still being worked out there's an article down here if you want to read a summary of all the studies that have been done but you should be aware that see reactive protein is an acute phase reactant synthesized in response to six and you should know that it can find to see one",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 484.422,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "when C3 is converted to c3b it splits off a small molecule called c3a and c3a has some effects on the immune system of its own c3a is called an anaphylaxis and that's because it's been shown to stimulate histamine release from mast cells and increased vascular permeability and it may be a component that leads to anaphylaxis in addition I told you that c3b can lead to formation of the Mac which leads to bacterial cell death we're going to talk about how that happens in a minute but you should also know that c3b just by itself can act as an option for macrophages and draw macrophages into the sights of compliment activation",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 553.012,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "so back to our overview slide of the compliment system I told you that the compliment system can be best understood by thinking of it as a series of methods for converting C3 to c3b and we've talked about the three ways that happens the alternative pathway is very easy because it's just spontaneous conversion of C3 to c3b the lectin pathway involves binding to Manos on the surface of microbes and creation of the c2b c4b convertase which then convert C3 into c3b and then finally the classic pathway involves antibody bindings to see one which also creates the C3 convert AC to BC 4B which then convert C3 into c3b so now we've talked about these three ways of creating c3b now let's talk about what happens when you have created and that involves formation of the membrane",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 589.783,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "remembering attack complex is formed by the compliment protein C5 through C9 these are sometimes called the late complement proteins are the terminal compliment proteins because they come at the end of all the pathways the way they form the mack is drawn in this picture here so c3b will cleave C5 into c5a and C5 B and then C5 B will bind to C6 C7 c89 and together they will form the Mac what the membrane attack complex does is it pokes holes in bacterial cell walls and the bacteria will swell and burst and that's how they die",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 639.41,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "just like when C3 was converted to c3b it split off a smaller protein the same thing is true of C5 when C5 is converted to c5-b to go on to form the back it splits off a smaller protein called c5a and c5a is an anti toxin is the same properties as c3a it can stimulate histamine release and increased vascular permeability leading to anaphylaxis in addition c5a has a special property it's a neutrophil chemotaxis agent so it can draw neutrophils into the sights of complement Activation so back to our overview slide now we've seen that there are three Pathways for the conversion of C3 to c3b then we've seen how c3b can go on to form the membrane and c58 and clinically this process is most important for fighting off bacteria especially and capsulated bacteria the complement system is a major way we defend ourselves against these pathogens and as we shall see when you are deficient in an element of the complement system the problem you usually have is recurrent bacterial infections",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 671.969,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the reason the compliment system doesn't bind to and destroy our own cells in the body is because they have different structures from bacteria and in addition there are membrane proteins that protect human cells two of the most important ones are called delay accelerating factor or Mac inhibitory protein delay accelerating factor is often called Daffy it's also called cd55 and Mac inhibitory protein is also called CD 59",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 739.263,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "Daft disrupts the attachment of c3b so that it can't proceed with formation of the Mack and cd59 directly disrupts the Mack and these are especially important for protecting red blood cells because patients who are deficient in deaf or cd59 have problems with hemolysis",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 762.508,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "so let's talk about paroxysmal nocturnal hemoglobinuria or pnh this is the syndrome that patients get when they are born with rare deficiencies in daff or cd59",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 779.68,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the primary problem is red blood cell Isis because they lack those protective proteins on their surface and they have complement-mediated lysis of red blood cell",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 789.733,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "anemia in addition it will lead to the spillage of hemoglobin into the bloodstream and finally into the urine that's why they get hemoglobinuria and this can lead to renal failure a second set of problems they get comes from the free plasma hemoglobin hemoglobin is thrombogenic when its present in high levels in the plasma and this can lead to thrombosis in addition hemoglobin binds nitric oxide and this will deplete nitric oxide from the tissues of their body the result is that they will have increased smooth muscle tone this leads to several of the symptoms of pnh the first one is a rectal dysfunction in particular people with pnh can get something called priapism where they have sustained painful and prolonged directions in Edition they can have dysphasia from abnormal muscle tone in the esophagus and they can get spasms of abdominal muscle tone in the abdomen",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 798.625,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "classically P&H patients have sudden episodes of hemolysis at night so they'll awake with abdominal pain and the urine will be discolored from the hemolysis they often have fatigue and dyspnea this is a result of the anemia and they often have abdominal pain from smooth muscle tension",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 847.185,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "in addition they get thrombosis and very unusual locations like the portal vein the veins or the cerebral veins thrombosis is the leading cause of death and as you can see from all these locations here it's usually venous clots that occur",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 861.848,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "now let's talk about other disorders where there is abnormal complement system function in the first one will talk about is an inherited C3 deficiency so as we saw before C3 is really Central to the entire complement system so if you're deficient in this protein you essentially lack a functioning complement system and as a result your vulnerable to the most important pathogens that compliment defense against and those are encapsulated bacteria so children born with a C3 deficiency will develop recurrent pneumococcal and age flaminia beginning in infancy",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 874.381,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "a second problem they have is with autoimmune diseases and it sounds counterintuitive these children lack a portion of the immune system that they have higher rates of autoimmune disease how can this be the case will the pathophysiology has to do with immune complex deposition so recall that immune complexes are antigens bound to an antibody usually an IGG antibody and these sometimes form in the plasma and they can deposit in tissue a major way that they are cleared are by compliment activation and the formation of c3b on their surface recall that c3b can draw in macrophages because they have compliment receptors so when you're deficient in the complement system you can't form this c3b and you can't draw in macrophages and as a result you have impaired clearance of immune complexes so children with deficiency syndromes and recall that type 370 disorders always involve immune complex formation another rare set of disorders are those that involved a terminal complement pathway so this involves deficiency and C55 these children have impaired defense against in capsulated bugs however they do still have an option for macrophages so they're not quite as bad off as children who are C3 deficient with children with a terminal pathway deficiency develop our current infections for reasons that are completely understood and a serious seems to be the worst offender in people who have this type of deficiency so these children will present with recurrent episodes of nice area managers",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 904.353,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "another disorder that involves the complement system is called hereditary angioedema and people with hereditary angioedema are deficient in the C1 inhibitor protein recall that I told you before that the C1 complex contains several molecules one of them is the C1 inhibitor protein",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1002.2,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the symptoms of this disorder have little to do with the compliment system the reason they occur is because the C1 inhibitor protein has many functions beyond the complement system and one of those functions is to break down bradykinin which is a vasodilator so if you are deficient in the C1 inhibitor protein the problem you have is high levels of bradykinin and in this leads to recurrent episodes of swelling and edema this is a picture of a child with angioedema you can see how there's puffiness and swelling around her eyes and you can get this from bee stings and other type of reaction occurs in hereditary angioedema and it's dangerous because it can involve the entire face and even to throw it in the tongue and then people can have problems breathing",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1017.072,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "so the symptoms begin in childhood and these patients have recurrent episodes of swelling like what I showed you on the last slide and importantly they will not have heard acharya because mediated by histamine and doesn't occur in this type of swelling there can be swelling of the skin but also internal portions of the body like the GI tract and the upper Airway and the airway swelling is what can be fatal you can diagnose hereditary angioedema by identifying a low C4 level in the plasma because there's a lack of C1 inhibitor you will get consumption of C4 C1 is always active in these patients so they have low levels and you can treat this by giving these patients a C1 inhibitor concentrate interestingly epinephrine doesn't work very well so when these patients come into emergency rooms are often treated for an orange reaction but that doesn't respond",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1057.139,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "a very high yield feature of hereditary angioedema for board exams is to know the fact that these patients should never be given an Ace inhibitor recall that ACE inhibitors block the conversion of angiotensin 1 to Angiotensin 2 they're used as antihypertensives and they're used in heart failure but they also block the breakdown of bradykinin and this is what leads to two of their important side effects one is cough and one is angioedema so people with hereditary angioedema have very high levels of rate of kind of all the time and if you give them an Ace inhibitor you can precipitate an acute episode of swallowing which can potentially be life threatening at the bottom of the screen never give ACE inhibitors to patients with hereditary angioedema",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1101.667,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "there's an autoantibody found in glomerular disease called C3 nephritic factor it's an autoantibody that stabilizes C3 convertase in this leads to overactivation of the classical pathway this autoantibodies found in over 80% of patients who have membranoproliferative glomerulonephritis type 2 I talk about this in more detail in the renal modules it leads to inflammation and hypocomplementemia from over activation of the complement pathway",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1139.926,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "finally let me finish by explaining the ways we clinically test the complement system the first one is a test called ch50",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1165.191,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "in this test the patient's Serum is added to sheep red blood cells with antibodies and the goal is for the classical Pathway to lice the Sheep red blood cells you need all of your compliment factors C1 to C9 for a normal result the result is reported in units per milliliter it's complicated to understand how they get this number but basically you dilute the patient's serum to see how far you have to dilute it to lights 50% of the red blood cells that's why it's called a ch50 test this is just a qualitative test to tell you yes or no that the complement system is working",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1171.591,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "the second test is quantitative this is where we directly measure C3 or C4 levels and the reason we do this is because these levels are low in many complement-mediated diseases from consumption so for example you can find low C3 or C4 levels in lupus and lupus nephritis and membranoproliferative glomerular disease and post streptococcal Marilyn or Freitas so finding a low complement level sometimes helps you make one of these diagnosis",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1202.793,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "and that includes our module on the compliment",
     "video_title": "04 The Complement System.mp4",
     "timestamp": 1226.6,
-    "video_path": "/data/immunology/04 The Complement System.mp4"
+    "video_path": "data/immunology/04 The Complement System.mp4"
   },
   {
     "text": "hi everybody and welcome to our module on the lymph nodes and spleen",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 0.0,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "let's start by defining the concept of lymph limp is the interstitial fluid that drains from tissues and it drains into a system of channels called the lymphatic system what it's going to do is circulate through the lymph nodes and this is very important for activating the immune system in response to pathogens that may be present in the tissues where the length came from eventually all the length of the body drains into the subclavian veins and then is returned to the venous system of the body",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 3.852,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "there are two types of so-called lymphoid organs the first group is the primary lymphoid organs and these are places where lymphocytes are formed so these include the bone marrow and the thymus these are the places that create the BNT cells we then have what are called secondary lymphoid organs and these are places where B&T cells can proliferate in response to infection and this includes the lymph nodes in the spleen it also includes the Pirates patches in the GI tract and also the tonsils",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 28.731,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so we're going to start by talking about the structure and function of lymph nodes and this is an illustration of the lymph node structure and you can basically think of a lymph node as having three layers the first layer is called the cortex that's this white area out here and it contains the circular structures called follicles we'll talk about what they do in a minute",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 54.191,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "the next innermost layer is the middle layer that says purple layer right here and it's called the paracortex the paracortex is where the T cells it will also talk more about that and then finally the innermost layer is called the medulla that's this red portion here and it's got these cavities or sinuses right here and the medulla has its own functions different from the paracortex and the cortex there are multiple vessels that carry lymph into the lymph node and they're called a friend lymph vessels and then basically the lymph percolates through the three layers so it will move through the cortex the paracortex and the medulla and then it will finally exit through a single effort has a single Ephraim festival and of course there are arteries and veins which Supply blood to the lymph nodes",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 72.51,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "let's talk in a little more detail about how the lymph nodes work to activate the immune response and in order to understand this I want you to imagine that there is a site of infection in the tissues maybe it's in the skin or maybe it's in the lungs one of the first things that's going to happen is that lymph is going to begin to drain from the site of infections towards the lymph nodes in that limp there will be dendritic cells recall that dendritic cells are professional antigen presenting cells and they will have antigen on their surface from the side of infection and they express MHC class 1 and class two and B7 and all the molecules you need in order to activate T cells so that will enter the limp carrying processed antigens on their surface in addition there will also be free antigens that gets swept along with the length so that didn't and the free antigens will be in the limp leaving the site of infection heading towards the lymph nodes",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 113.445,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "the lympho then enter the nodes and there are many B&T sells waiting there looking to find their matching antigen you can think of lymph nodes as places where B&T sells meet their unique antigens that can stimulate them the dendritic cells will present antigen to T cells in the context of MHC in addition there are antigen presenting cells present in the lymph node which can take up those free antigens and process it and present it to T cells they're all so B cells found in the lymph nodes that can react to antigen and the result of this is that you will get generation of an Adaptive immune response by way of funneling the antigens at the side of infection through a lymph node or BNT cells or waiting",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 163.445,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "now that we understand how antigens travel from the sights of infection to the lymph nodes let's talk about exactly what occurs inside the lymph node to generate the immune response and we're going to do this by going through the three different layers and talk about what happens in each layer so the first layer that the length and counters what enters the lymph node is the cortex that's this white layer on the outside right here and all of the immune system action in the cortex is occurring in these structures called follicles",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 201.006,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "set alarm for found in the cortex of the lymph nodes as they just said and the main process that happens in the follicles is b-cell activation they are the site where B cells meet with their unique antigens and respond and begin secreting antibodies",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 226.383,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "114 follicles contains some special cells that help activate the B cells and those are called follicular dendritic cells that are different from the tissue dendritic cells that carry antigen from tissues to the lymph nodes these cells are permanent residents of the lymph nodes and they have special surface receptors that bind to compliment antigen complexes so they find lots of different antigen complexes on their surface and this makes it very easy for the B cells to Crosslink and become activated they are like pieces of velcro that pick up lots of different antigens and then these cells can stick to the antigens and react",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 240.53,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "have a special note about the follicular dendritic cells they are very important as a reservoir for HIV early after infection large amounts of HIV particles are found in the folic or digenic cells and their major piece of the pathophysiology of HIV infection",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 274.106,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "there are two types of follicles in the cortex primary follicles are inactive these contain follicular dendritic cells and B cells but they are quiet the secondary follicles are what you see during inflammation and infection they are also called germinal centers and these are sites of b-cell growth and differentiation this is where B cells May class switch and start secreting different types of antibodies there are also nearby helper T cells in the paracortex which will talk about in a minute and these combined antigens and stimulate more growth from the B cells",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 288.088,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "here's a picture of a lymph node section under the microscope this is a follicle right here and you can see that it's got this white center and that's a germinal center indicating that this is a secondary file called that's begun to respond to infection there's another follicle over here that's also a secondary follicle",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 317.45,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "go back to our picture of the lymph node we've talked about the cortex and the follicles and now we're going to talk about the middle region of lymph node and that's called the paracortex is depicted by this purple section in here and the paracortex is where the T cells are housed",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 332.05,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so there are two important features of the paracortex that you need to be aware of the first is that they contain T cells which can be activated by dendritic cells that present antigen",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 346.222,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "the second important feature of the paracortex is that it contains special structures called high endothelial venules these are special vascular structures that allow B&T cells to enter the nodes it's easy to understand this with a picture so if you imagine a venule that comes after a capillary normally the endothelium is composed of cells like this that overlap one another and they don't allow cells to exit high in the field manuals on the other hand are a little bit different these are venules that are found after the capillaries in the lymph nodes you can also find them in the tonsils and they have an Athenian that is a little bit different period And this is the mechanism by which B cells and T cells which come from the bone marrow Define throughout the body",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 354.846,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "two other special things to be aware of about the paracortex it can become engorged in an immune response when patients have swollen nodes because they are infected the paracortex is very large and in addition there are some children born with very rare T-cell deficiency disorders where they don't have T cells one of these is to George syndrome and these children will have a very underdeveloped pair of Cortex because obviously they don't have T cells to make up this portion of the lymph node",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 405.183,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "back to our picture of the lymph node we've talked about the cortex and the follicles and now we've talked about the paracortex where the T cells live and where the high endothelial venules are so now we're going to talk about the last section the innermost sectional lymph node and that's the medulla which is this red section right here and there are two portions of the medulla that each do different things first there are the chords which are depicted by these red areas right here and then those cords make little cavities which are the sinuses right here and they're different physiologic activities that occur in the chords and the sinuses",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 428.645,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so the medullary sinuses are those cavities I showed you and they contain macrophages and they are constantly filtering the lymph and they can phagocytose bacteria and viruses and other parasites or antigens that get into the medullary sinus the modular chords on the other hand are those tissues between the cavities and they contain plasma cells that are secreting antibodies",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 458.569,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "now let's switch gears and talk about the spleen which is another secondary lymphoid organ the spleen is located in the left upper quadrant this is a picture of where you can find in the body right here on the screen and the job of the spleen is to filter the blood it has nothing to do with lymph some people erroneously think of the spleen is a large lymph node but that's not the case it's a different organ with a different structure and in contrast to the lymph nodes all the blood elements can enter the spleen there are no high endothelial venules there's no selective entry of tnb cells everything that's found in the blood pressure can attempt to filter the elements in the bloodstream",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 478.488,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "this is an illustration of the spleen blood enters through the splenic artery and then the blood will percolate through two sections of the spleen the first is this white section here and that's called the white pulp and then the blood will move through this red section here which is called the red pulp and eventually it will find its way back into this planet vein and drain from the organ",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 513.662,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "there are three important structures in the white pulp that you need to know about the first are the follicles the second are the perioral or lymphocytes sheets or the pals and then you need to know about the marginal Zone and then in the red pulp the most important structure are the sinusoids and we'll talk about all these now let's talk in general about what the two different portions of the spleen the white and red pulp do in the white pulp the blood is exposed to B&T cells which can be activated if antigens are present and in addition there are macrophages found in the white pulp that can perform phagocytosis in the red poll blood gets filtered through the dinosaurs and these are very important for removing old red blood cells and this is why the red pulp is red because of all those red cells in addition many platelets are stored in the 30 or 40 percent of your platelets are stored at any point in time in the spleen",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 532.382,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "as I mentioned to you before there are three important portions of the white pulp to know about the first is the marginal Zone this contains macrophages which remove debris they're also some dendritic cells here that can process antigen the follicles in the spleen are very similar to the follicles in lymph nodes they contain B cells and then the T cells in the spleen are found in those prioritario or lymphocytes cheese this is where T cells can respond to antigens present in the blood",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 580.458,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so back to our drawing here these circular structures are follicles this is what contains the B cells the periodontal or lymphocytes are these sheets that surround the arteries and that's what houses the T cells and then the marginal Zone here contains lots of macrophages and some other cells like dendritic cells",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 604.511,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "the most important structure found in the red pulp are the sinusoids of the spleen the red pulp is lined by vascular structures called sinusoids and these sinusoids contain an open endothelium that allows cells to pass in and out when cells exit the sinusoids they enter the splenic chords and in The Splendid chords they encounter macrophages and these macrophages are very unique and that their major role is to remove dead and dying red blood cells and this is the way old blood cells exit the circulation in your body and the feeling of the sinusoids are tall like this with spaces between them so that blood elements can pass through the surrounded by a thin basement membrane like this that's often described as a barrel hoop and you should know the term Barrel hoop basement membrane it's a buzz word for describing the feeling of the signs of the spleen despite the presence of the barrel hoop they're still plenty of space for blood elements to exit to sinuses and enter into those cords of the spleen",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 620.453,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "one of the most important things to know about the spleen is what happens when the spleen is absent or dysfunctional and you should know that when you have splenic dysfunction you are at increased risk for bloodstream infections from encapsulated organisms let's talk about why that is the case and capsulated bacteria as you know resist phagocytosis by virtue of the capsule they have which surrounds the organism",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 674.518,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so the major way that the body clears these pathogens is by macrophage phagocytosis and also by compliment so these organisms need to be tagged with antibodies usually IGG that antibody can activate complement which can directly kill the bacteria in addition the compliment can create c3b and both the presence of the antibody and the c3b will draw in macrophages and these macrophages then can undergo phagocytosis and engulf the bacteria so between the complement system and the macrophage this is how these encapsulated bugs get removed from the body when you have to function you lose those marginal Zone macrophages this means you're going to lose phagocytosis in addition you lose the optimization functions of anybody's first of all the will be less antibodies against the capsules because you'll lose Clinic B cells there will be a loss of IGG optimization for those macrophages in addition you will lose compliment activity because the classic pathway of complementation via antibodies is very important for activating compliment against capsulated killing of these in capsulated bacteria you will also lose c3b optimization via the complement system so for all of these reasons right here you have great risk of bacterial infections by encapsulated bugs when you don't have a spleen",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 695.793,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so let's talk about the bugs that cause infections in people who have splenic dysfunction strep pneumo is Far and Away the predominant pathogen that causes sepsis in these patients and an infection with strep pneumo that gets into the bloodstream if you don't have a spleen is very deadly more than half of patients will die from the infection",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 776.302,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "other encapsulated organisms that commonly cause infections are influenza type B and nicer and meningitis some less common bacteria are strep I genes and E coli and also salmonella",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 792.823,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "and then finally recall that both malaria and babesia are protozoa that can infect red blood cells and because the spleen is absent in these patients it can't clear these infections very easily and they can get an overwhelming infection with malaria or babesia",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 804.219,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "so why would someone have absence or a non-functional spleen while one of the first reasons is if their spleen has been removed by a surgical procedure and one of the most common reasons this is done is because of trauma if trauma causes bleeding at the side of the spleen the organ is often removed because you can survive without it",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 818.189,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "another reason that people will sometimes electively have their spleen removed is idiopathic thrombocytopenic purpura this is a condition where there's increased consumption of platelets and low platelet counts and the spleen is a major side of Phagocytosis of platelets so by removing the spleen you can sometimes increase the platelet count for these patients",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 834.609,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "and another reason is hereditary spherocytosis so if you take the spleen out there is less destruction of red blood cells and you will minimize the anemia",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 852.275,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "and then it's important to know that patients who have sickle cell anemia have a functional a Splenda so they have so many abnormal red cells that their spleen is often damaged from trying to consume and remove all those abnormal red cells and as a result they are functionally a splenic and they are at risk for encapsulated bacterial infections",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 860.594,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "there are some characteristic peripheral blood smear findings and patients who have had a splenectomy that you should know the first one is called the presence of Howell Jolly bodies some red blood cells leave the marrow with nuclear remnants still present inside the cell and normally these are cleared by the spleen but they will appear in increased numbers in the peripheral blood if the spleen is not working",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 877.412,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "target cells can also be seen in people have had a splenectomy they're also seen in liver disease and hemoglobin disorders the basic principle of a Target cell is it occurs when there is too much surface area or membrane or too little volume essentially you have increased membrane area to volume area in liver disease patients have too much surface area of the red blood cells in hemoglobin disorders patients have two little volume the reason you get these postponed to me is because there's always a small number of them in the blood but they're usually cleared by the spleen when your spleen isn't working you will see increase numbers of these target cells and then you will see thrombocytosis in patients who have had their spleen removed because this is not removing and storing those platelets like it is supposed to do",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 896.461,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "this is a picture of a whole Jolly body on the left side of the screen here you can see there's a red blood cell with some nuclear remnants inside this is a picture of target cells on the right side you can see there are these circular Target like structures these white structures",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 937.064,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "inside of the RBC",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 949.629,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   },
   {
     "text": "and that concludes our module on lymph nodes and",
     "video_title": "05 Lymph Nodes and Spleen.mp4",
     "timestamp": 951.769,
-    "video_path": "/data/immunology/05 Lymph Nodes and Spleen.mp4"
+    "video_path": "data/immunology/05 Lymph Nodes and Spleen.mp4"
   }
 ]
