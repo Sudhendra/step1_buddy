@@ -1,3 +1,4 @@
 transformers
 openai
 torch
+opencv-python
