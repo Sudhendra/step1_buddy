@@ -1,44 +1,29 @@
 import os
 import json
 from moviepy.editor import VideoFileClip
-import speech_recognition as sr
-from pydub import AudioSegment
-from pydub.silence import split_on_silence
-import nltk
-nltk.download('punkt', quiet=True)
+import whisper
 from nltk.tokenize import sent_tokenize
 from tqdm import tqdm
+import nltk
+import torch
+nltk.download('punkt', quiet=True)
 
 def extract_audio(video_path, audio_path):
     video = VideoFileClip(video_path)
     video.audio.write_audiofile(audio_path, verbose=False, logger=None)
 
 def transcribe_audio(audio_path):
-    r = sr.Recognizer()
-    
-    sound = AudioSegment.from_wav(audio_path)
-    chunks = split_on_silence(sound, min_silence_len=700, silence_thresh=sound.dBFS-14, keep_silence=500)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    model = whisper.load_model("base").to(device)
+    result = model.transcribe(audio_path)
     
     transcript = []
-    for i, chunk in enumerate(tqdm(chunks, desc="Transcribing chunks", leave=False)):
-        chunk_filename = f"chunk{i}.wav"
-        chunk.export(chunk_filename, format="wav")
-        with sr.AudioFile(chunk_filename) as source:
-            audio = r.record(source)
-        
-        try:
-            text = r.recognize_google(audio)
-            transcript.append({
-                "text": text,
-                "start_time": sum(len(c) for c in chunks[:i]) / 1000,
-                "end_time": sum(len(c) for c in chunks[:i+1]) / 1000
-            })
-        except sr.UnknownValueError:
-            print("Could not understand audio")
-        except sr.RequestError:
-            print("Could not request results")
-        
-        os.remove(chunk_filename)
+    for segment in result["segments"]:
+        transcript.append({
+            "text": segment["text"],
+            "start_time": segment["start"],
+            "end_time": segment["end"]
+        })
     
     return transcript
 
@@ -84,8 +69,7 @@ def process_topic(topic_dir, output_file):
         json.dump(all_sentences, f, indent=2)
 
 def main():
-    # , "GIT", "Cardio", "Neurology", "Endocrinology"
-    topics = ["immunology"]
+    topics = ["immunology"]  # Add other topics as needed
     base_dir = "/home/kambhamettu.s/Projects/step_vqa/data"
     
     for topic in tqdm(topics, desc="Processing topics"):
@@ -96,4 +80,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # sent_tokenize("hello, how do u do")
