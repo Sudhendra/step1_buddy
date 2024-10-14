@@ -40,6 +40,7 @@ def load_and_preprocess_data(topic: str):
     
     # Check if preprocessed embeddings exist
     embeddings_file = f"embeddings_{topic.lower()}.pkl"
+    print(f"creating {embeddings_file}")
     if os.path.exists(embeddings_file):
         with open(embeddings_file, 'rb') as f:
             embeddings = pickle.load(f)
