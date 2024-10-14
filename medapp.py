@@ -139,7 +139,7 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
 def main():
     st.title("Step 1 Buddy")
 
-    topics = ["immunology", "GIT", "Cardio", "Neurology", "Endocrinology"]
+    topics = ["immunology", "gastroenterology", "Cardio", "Neurology", "Endocrinology"]
     selected_topic = st.selectbox("Select a topic", topics)
 
     video_data, index, embeddings = load_and_preprocess_data(selected_topic)
