@@ -4,4 +4,4 @@ torch
 opencv-python-headless
 scikit-learn
 sentence-transformers
-
+faiss-cpu
