@@ -3,4 +3,5 @@ openai
 torch
 opencv-python-headless
 scikit-learn
+sentence-transformers
 
