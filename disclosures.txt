@@ -17,7 +17,7 @@
 
 ## Copyright Notice
 
-© [Current Year] Xunia Labs, Inc. All Rights Reserved.
+© 2024 Xunia Labs, Inc. All Rights Reserved.
 
 This software, including its source code, documentation, and associated materials, is the property of Xunia Labs, Inc. Unauthorized copying, modification, distribution, or use of this software, in whole or in part, by any means, is strictly prohibited.
 
