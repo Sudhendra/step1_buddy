@@ -146,7 +146,7 @@ def main():
     with tab1:
         topics = ["immunology", "gastroenterology", "cell biology"]
         with streamlit_analytics.track():
-            selected_topic = st.selectbox("Select a topic", topics)
+            selected_topic = st.selectbox("Select a topic", topics, key=1)
 
         video_data, index, embeddings = load_and_preprocess_data(selected_topic)
         with streamlit_analytics.track():
