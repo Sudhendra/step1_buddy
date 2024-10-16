@@ -83,7 +83,7 @@ def retrieve_passages(query: str, index, embeddings: np.ndarray, video_data: Lis
 def generate_answer(query: str, context: str) -> str:
     try:
         response = client.chat.completions.create(
-            model="gpt-4-0125-preview",
+            model="gpt-4o-mini",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant that answers medical questions based on the provided context. Always ground your answers in the given context and be concise."},
                 {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"}
