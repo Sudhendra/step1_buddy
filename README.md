@@ -13,7 +13,7 @@ Step 1 Buddy is an AI-powered application designed to assist medical students in
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/step1-buddy.git
+   git clone https://github.com/Sudhendra/step1_buddy.git
    cd step1-buddy
    ```
 
