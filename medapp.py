@@ -192,7 +192,7 @@ def main():
                     <button style="
                         font-size: 18px;
                         padding: 12px 24px;
-                        background-color: #4CAF50;
+                        background-color: #FFB347;
                         color: white;
                         border: none;
                         border-radius: 5px;
