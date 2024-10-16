@@ -3,8 +3,8 @@
 1. **Video Content Source**
    The videos used for this project are obtained from a free Telegram bot ([@Boardsnbeyondbot](https://t.me/Boardsnbeyondbot)). We do not own or claim any rights over the content shown in this application.
 
-2. **Source Code License**
-   The use of the GitHub source code for this project is protected by license. Permission must be obtained before using it for personal or commercial projects.
+2. **Source Code License and Copyright**
+   The use of the GitHub source code for this project is protected by license and copyright. All rights are reserved by Xunia Labs, Inc. Permission must be obtained before using it for personal or commercial projects. This software and all associated content belong to Xunia Labs, Inc.
 
 3. **Future Updates**
    This is the primary iteration of the app. In future versions, the content will be updated with our own or licensed preparation material.
@@ -14,5 +14,11 @@
 - This application is designed for educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment.
 - The accuracy and completeness of the information provided cannot be guaranteed, as it is based on the content from external sources.
 - Users are encouraged to verify any information obtained from this application with other sources and consult with qualified healthcare providers for medical concerns.
+
+## Copyright Notice
+
+© [Current Year] Xunia Labs, Inc. All Rights Reserved.
+
+This software, including its source code, documentation, and associated materials, is the property of Xunia Labs, Inc. Unauthorized copying, modification, distribution, or use of this software, in whole or in part, by any means, is strictly prohibited.
 
 We are committed to improving and expanding this application to better serve the needs of medical students and professionals. Your feedback and suggestions are welcome as we continue to develop and refine this tool.
