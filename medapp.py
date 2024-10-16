@@ -139,38 +139,48 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
 def main():
     st.title("Step 1 Buddy")
 
-    topics = ["immunology", "gastroenterology", "cell biology", "Neurology", "Endocrinology"]
-    selected_topic = st.selectbox("Select a topic", topics)
+    # Add a new tab for disclosures
+    tab1, tab2 = st.tabs(["Main", "Disclosures"])
 
-    video_data, index, embeddings = load_and_preprocess_data(selected_topic)
+    with tab1:
+        topics = ["immunology", "gastroenterology", "cell biology"]
+        selected_topic = st.selectbox("Select a topic", topics)
 
-    user_query = st.text_input("Enter your question:")
+        video_data, index, embeddings = load_and_preprocess_data(selected_topic)
 
-    if user_query:
-        with st.spinner("Searching for relevant information..."):
-            relevant_passages = retrieve_passages(user_query, index, embeddings, video_data)
+        user_query = st.text_input("Enter your question:")
 
-        context = " ".join([p["text"] for p in relevant_passages])
-        
-        with st.spinner("Generating answer..."):
-            answer = generate_answer(user_query, context)
+        if user_query:
+            with st.spinner("Searching for relevant information..."):
+                relevant_passages = retrieve_passages(user_query, index, embeddings, video_data)
 
-        st.subheader("Generated Answer:")
-        st.write(answer)
+            context = " ".join([p["text"] for p in relevant_passages])
+            
+            with st.spinner("Generating answer..."):
+                answer = generate_answer(user_query, context)
 
-        with st.expander("View Relevant Passages"):
-            for passage in relevant_passages:
-                st.write(f"Video: {passage['video_title']}")
-                st.write(f"Timestamp: {passage['timestamp']}")
-                st.write(f"Relevant text: {passage['text']}")
-                
-                frame = extract_frame(passage['video_path'], passage['timestamp'])
-                if frame:
-                    st.image(frame, caption=f"Frame at {passage['timestamp']} seconds")
-                else:
-                    st.write("Failed to extract frame from video.")
-                
-                st.write("---")
+            st.subheader("Generated Answer:")
+            st.write(answer)
+
+            with st.expander("View Relevant Passages"):
+                for passage in relevant_passages:
+                    st.write(f"Video: {passage['video_title']}")
+                    st.write(f"Timestamp: {passage['timestamp']}")
+                    st.write(f"Relevant text: {passage['text']}")
+                    
+                    frame = extract_frame(passage['video_path'], passage['timestamp'])
+                    if frame:
+                        st.image(frame, caption=f"Frame at {passage['timestamp']} seconds")
+                    else:
+                        st.write("Failed to extract frame from video.")
+                    
+                    st.write("---")
+
+    with tab2:
+        st.header("Disclosures")
+        with open("disclosures.txt", "r") as f:
+            disclosures_content = f.read()
+        st.markdown(disclosures_content)
 
 if __name__ == "__main__":
     main()
