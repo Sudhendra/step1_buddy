@@ -20,10 +20,10 @@ load_dotenv()
 # Wrap the entire app in streamlit_analytics.track()
 with streamlit_analytics.track():
     # Set up OpenAI client
-    st.sidebar.title("OpenAI API Key")
     key = os.getenv("OPENAI_API_KEY")
     if not key:
-        key = st.sidebar.text_input("Enter your OpenAI API key:", type="password")
+        st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
+        st.stop()
     client = OpenAI(api_key=key)
 
     # Check for GPU availability
@@ -85,7 +85,7 @@ with streamlit_analytics.track():
     def generate_answer(query: str, context: str) -> str:
         try:
             response = client.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-4-0125-preview",
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant that answers medical questions based on the provided context. Always ground your answers in the given context and be concise."},
                     {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"}
