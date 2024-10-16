@@ -183,6 +183,31 @@ def main():
                     
                     st.write("---")
 
+        # Add the feedback button at the end of the main tab
+        st.markdown("---")
+        st.markdown(
+            """
+            <div style="display: flex; justify-content: center; margin-top: 30px;">
+                <a href="https://forms.gle/ht6MH14t8kFqrrni6" target="_blank">
+                    <button style="
+                        font-size: 18px;
+                        padding: 12px 24px;
+                        background-color: #4CAF50;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                        transition: all 0.3s ease;
+                    ">
+                        🎁 Leave Feedback for Perks! 🎁
+                    </button>
+                </a>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
     with tab2:
         st.header("Disclosures")
         with open("disclosures.txt", "r") as f:
