@@ -4,7 +4,7 @@
 
 2. **No Implied License**: Viewing, forking, or starring this repository does not constitute permission to use, modify, or distribute the software.
 
-3. **Contact for Licensing**: To request permission or discuss licensing options, please contact [Your Contact Information].
+3. **Contact for Licensing**: To request permission or discuss licensing options, please contact support@xunialabs.com].
 
 4. **Contributions**: By submitting contributions to this project, you agree to grant the project owners the right to use your contributions under the terms of this license.
 
@@ -18,4 +18,4 @@ Last updated: 16-10-2024
 
 ## Licensing
 
-This project is proprietary software. All rights are reserved, and usage is subject to the terms outlined in the USAGE.md file. Please read it carefully before using, copying, modifying, or distributing this software. For licensing inquiries, please contact [Your Contact Information].
+This project is proprietary software. All rights are reserved, and usage is subject to the terms outlined in the USAGE.md file. Please read it carefully before using, copying, modifying, or distributing this software. For licensing inquiries, please contact support@xunialabs.com.
