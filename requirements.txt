@@ -6,3 +6,4 @@ scikit-learn
 sentence-transformers
 faiss-cpu
 streamlit_analytics
+python-dotenv

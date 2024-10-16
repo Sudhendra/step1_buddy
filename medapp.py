@@ -12,12 +12,18 @@ import faiss
 from openai import OpenAI
 import pickle
 import cv2
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Wrap the entire app in streamlit_analytics.track()
 with streamlit_analytics.track():
     # Set up OpenAI client
     st.sidebar.title("OpenAI API Key")
-    key = st.sidebar.text_input("Enter your OpenAI API key:", type="password")
+    key = os.getenv("OPENAI_API_KEY")
+    if not key:
+        key = st.sidebar.text_input("Enter your OpenAI API key:", type="password")
     client = OpenAI(api_key=key)
 
     # Check for GPU availability
