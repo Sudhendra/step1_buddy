@@ -142,6 +142,8 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
 
 # Main Streamlit app
 def main():
+    streamlit_analytics.start_tracking()
+    
     st.title("Step 1 Buddy")
 
     # Add a new tab for disclosures
@@ -153,8 +155,9 @@ def main():
 
         video_data, index, embeddings = load_and_preprocess_data(selected_topic)
         user_query = st.text_input("Enter your question:", key="user_query_input")
+        submit_button = st.button("Submit", key="submit_button")
 
-        if user_query:
+        if submit_button and user_query:
             with st.spinner("Searching for relevant information..."):
                 relevant_passages = retrieve_passages(user_query, index, embeddings, video_data)
 
@@ -185,6 +188,8 @@ def main():
         with open("disclosures.txt", "r") as f:
             disclosures_content = f.read()
         st.markdown(disclosures_content)
+
+    streamlit_analytics.stop_tracking()
 
 if __name__ == "__main__":
     main()
