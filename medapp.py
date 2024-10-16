@@ -200,7 +200,7 @@ def main():
                         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
                         transition: all 0.3s ease;
                     ">
-                        🎁 Leave Feedback for Perks! 🎁
+                        ⚕️ Leave Feedback if you liked it! ⚕️
                     </button>
                 </a>
             </div>
