@@ -1,0 +1,8 @@
+jobs:
+  example-job:
+    steps:
+      - name: Use API Key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Your script that uses the API key
