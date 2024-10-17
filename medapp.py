@@ -195,11 +195,12 @@ def main():
             st.subheader("Generated Answer:")
             st.write(answer)
 
-            # Add the mindmap visualization
-            st.subheader("Interactive Mindmap")
-            nodes, edges = build_mindmap(user_query, answer, related_topics)
-            config = Config(width=750, height=500, directed=True, physics=True, hierarchical=False)
-            agraph(nodes=nodes, edges=edges, config=config)
+            # Add the mindmap visualization within an expander
+            with st.expander("View Interactive Mindmap"):
+                st.subheader("Interactive Mindmap")
+                nodes, edges = build_mindmap(user_query, answer, related_topics)
+                config = Config(width=750, height=500, directed=True, physics=True, hierarchical=False)
+                agraph(nodes=nodes, edges=edges, config=config)
 
             with st.expander("View Relevant Passages"):
                 for passage in relevant_passages:
