@@ -168,7 +168,7 @@ def build_mindmap(query: str, answer: str, related_topics: List[str]) -> Tuple[L
 
 # Main Streamlit app
 def main():
-    streamlit_analytics.start_tracking(load_from_json="tracking/tracking.json")
+    streamlit_analytics.start_tracking()
     
     st.title("Step 1 Buddy")
 
