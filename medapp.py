@@ -13,6 +13,8 @@ from openai import OpenAI
 import pickle
 import cv2
 from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import credentials, firestore
 
 # Load environment variables
 load_dotenv()
@@ -140,9 +142,14 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
         st.error(f"An unexpected error occurred: {str(e)}")
         return None
 
+# Initialize Firebase
+cred = credentials.Certificate("firebase-key.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 # Main Streamlit app
 def main():
-    streamlit_analytics.start_tracking()
+    streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
     
     st.title("Step 1 Buddy")
 
@@ -214,7 +221,7 @@ def main():
             disclosures_content = f.read()
         st.markdown(disclosures_content)
 
-    streamlit_analytics.stop_tracking()
+    streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
 if __name__ == "__main__":
     main()

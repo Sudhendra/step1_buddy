@@ -24,5 +24,9 @@ jobs:
       - name: Run application
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          FIREBASE_KEY: ${{ secrets.FIREBASE_KEY }}
         run: |
           python medapp.py
+
+      - name: Create Firebase key file
+        run: echo "$FIREBASE_KEY" > firebase-key.json
