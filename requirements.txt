@@ -8,3 +8,4 @@ faiss-cpu
 streamlit_analytics
 python-dotenv
 streamlit-agraph
+firebase-admin

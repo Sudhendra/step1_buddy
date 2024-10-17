@@ -166,9 +166,32 @@ def build_mindmap(query: str, answer: str, related_topics: List[str]) -> Tuple[L
     
     return nodes, edges
 
+# Get Firebase credentials
+def get_firebase_key():
+    # Try to get the key from Streamlit secrets first (for deployed app)
+    if 'firebase_key' in st.secrets:
+        return json.loads(st.secrets['firebase_key'])
+    
+    # If not in secrets, try to get from environment variable (for local development)
+    firebase_key_path = os.getenv("FIREBASE_KEY_PATH")
+    if firebase_key_path and os.path.exists(firebase_key_path):
+        with open(firebase_key_path, 'r') as f:
+            return json.load(f)
+    
+    # If neither method works, raise an error
+    raise ValueError("Firebase key not found in secrets or local file.")
+
 # Main Streamlit app
 def main():
-    streamlit_analytics.start_tracking()
+    # Get Firebase credentials
+    firebase_key = get_firebase_key()
+    firebase_collection = os.getenv("FIREBASE_COLLECTION", "counts")
+
+    # Start tracking with Firebase Firestore
+    streamlit_analytics.start_tracking(
+        firestore_key_json=firebase_key,
+        firestore_collection_name=firebase_collection
+    )
     
     st.title("Step 1 Buddy")
 
@@ -264,7 +287,11 @@ def main():
             disclosures_content = f.read()
         st.markdown(disclosures_content)
 
-    streamlit_analytics.stop_tracking(save_to_json=os.path.join("tracking", "tracking_data.json"))
+    # Stop tracking at the end of the main function
+    streamlit_analytics.stop_tracking(
+        firestore_key_json=firebase_key,
+        firestore_collection_name=firebase_collection
+    )
 
 if __name__ == "__main__":
     main()
