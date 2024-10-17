@@ -14,8 +14,9 @@ import pickle
 import cv2
 from dotenv import load_dotenv
 from streamlit_agraph import agraph, Node, Edge, Config
+import logging
 
-# Load environment variables
+# Load environment variables (for local development)
 load_dotenv()
 
 # Set up OpenAI client
@@ -170,7 +171,7 @@ def build_mindmap(query: str, answer: str, related_topics: List[str]) -> Tuple[L
 def get_firebase_key():
     # Try to get the key from Streamlit secrets first (for deployed app)
     if 'firebase_key' in st.secrets:
-        return json.loads(st.secrets['firebase_key'])
+        return st.secrets['firebase_key']
     
     # If not in secrets, try to get from environment variable (for local development)
     firebase_key_path = os.getenv("FIREBASE_KEY_PATH")
@@ -185,7 +186,7 @@ def get_firebase_key():
 def main():
     # Get Firebase credentials
     firebase_key = get_firebase_key()
-    firebase_collection = os.getenv("FIREBASE_COLLECTION", "counts")
+    firebase_collection = st.secrets.get('firebase_collection', 'counts')
 
     # Start tracking with Firebase Firestore
     streamlit_analytics.start_tracking(
