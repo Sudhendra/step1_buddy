@@ -143,9 +143,19 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
         return None
 
 # Initialize Firebase
-cred = credentials.Certificate("firebase-key.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+import os
+print(f"Current working directory: {os.getcwd()}")
+print(f"Files in current directory: {os.listdir()}")
+
+try:
+    with open("firebase-key.json", "r") as f:
+        print(f"Firebase key file contents: {f.read()}")
+    cred = credentials.Certificate("firebase-key.json")
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+except Exception as e:
+    print(f"Error initializing Firebase: {str(e)}")
+    # You might want to add a fallback here or skip Firebase initialization
 
 # Main Streamlit app
 def main():
