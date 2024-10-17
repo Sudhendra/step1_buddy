@@ -22,7 +22,10 @@ jobs:
           pip install -r requirements.txt
           
       - name: Create Firebase key file
-        run: echo "$FIREBASE_KEY" > firebase-key.json
+        run: echo '${{ secrets.FIREBASE_KEY }}' > firebase-key.json
+      
+      - name: Debug - Print Firebase key file content
+        run: cat firebase-key.json
       
       - name: Run application
         env:
