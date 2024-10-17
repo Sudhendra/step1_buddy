@@ -1,83 +1,151 @@
 import streamlit as st
 import streamlit_analytics
-import os
+import pandas as pd
+import numpy as np
+from sentence_transformers import SentenceTransformer
+import torch
 import json
-import tempfile
+from typing import List, Dict
+import os
+from PIL import Image
+import faiss
+from openai import OpenAI
+import pickle
+import cv2
 from dotenv import load_dotenv
-import logging
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-
-# Load environment variables for local development
+# Load environment variables
 load_dotenv()
 
-def get_firebase_key():
-    """
-    Retrieves the Firebase key from Streamlit secrets or environment variables.
-    For deployed apps, returns the JSON key directly or writes it to a temporary file.
-    For local development, returns the path from FIREBASE_KEY_PATH.
-    """
-    logging.info("Attempting to retrieve Firebase key...")
-    logging.info(f"Available secrets: {', '.join(st.secrets.keys())}")
+# Set up OpenAI client
+key = os.getenv("OPENAI_API_KEY")
+if not key:
+    st.error("OpenAI API key not found. Please set the OPENAI_API_KEY environment variable.")
+    st.stop()
+client = OpenAI(api_key=key)
 
-    if 'FIREBASE_KEY_JSON' in st.secrets or 'firebase_key_json' in st.secrets:
-        firebase_key_json = st.secrets.get('FIREBASE_KEY_JSON') or st.secrets.get('firebase_key_json')
-        logging.info(f"First 20 characters of FIREBASE_KEY_JSON: {firebase_key_json[:20]}...")
-        
-        try:
-            json.loads(firebase_key_json)
-            logging.info("Successfully parsed FIREBASE_KEY_JSON as JSON")
-            return firebase_key_json
-        except json.JSONDecodeError:
-            logging.info("FIREBASE_KEY_JSON is not valid JSON")
-    
-    # For local development, use FIREBASE_KEY_PATH from environment variables
-    firebase_key_path = os.getenv("FIREBASE_KEY_PATH")
-    if firebase_key_path and os.path.exists(firebase_key_path):
-        logging.info(f"Using local Firebase key path: {firebase_key_path}")
-        return firebase_key_path
-    
-    # If neither method works, raise an error
-    logging.error("Firebase key not found in secrets or local environment")
-    raise ValueError("Firebase key not found in secrets or local environment")
+# Check for GPU availability
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {device}")
 
-def main():
-    # Retrieve Firebase credentials
+# Load SentenceTransformer model
+@st.cache_resource
+def load_sentence_transformer():
+    return SentenceTransformer('all-MiniLM-L6-v2').to(device)
+
+model = load_sentence_transformer()
+
+# Load and preprocess video data
+@st.cache_data
+def load_and_preprocess_data(topic: str):
+    file_path = os.path.join('data', f'{topic.lower()}_videos.json')
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+    
+    texts = [item['text'] for item in data]
+    
+    # Check if preprocessed embeddings exist
+    embeddings_file = f"embeddings_{topic.lower()}.pkl"
+    print(f"creating {embeddings_file}")
+    if os.path.exists(embeddings_file):
+        with open(embeddings_file, 'rb') as f:
+            embeddings = pickle.load(f)
+    else:
+        embeddings = model.encode(texts, convert_to_tensor=True, show_progress_bar=True)
+        embeddings = embeddings.cpu().numpy()
+        with open(embeddings_file, 'wb') as f:
+            pickle.dump(embeddings, f)
+    
+    # Create FAISS index
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
+    
+    return data, index, embeddings
+
+# Retrieve relevant passages using FAISS
+def retrieve_passages(query: str, index, embeddings: np.ndarray, video_data: List[Dict], top_k: int = 5) -> List[Dict]:
+    query_embedding = model.encode([query], convert_to_tensor=True, show_progress_bar=False).cpu().numpy()
+    D, I = index.search(query_embedding, top_k)
+    
+    retrieved_passages = []
+    for idx in I[0]:
+        passage = video_data[idx]
+        retrieved_passages.append({
+            'text': passage['text'],
+            'video_title': passage['video_title'],
+            'timestamp': passage['timestamp'],
+            'video_path': passage['video_path']
+        })
+    
+    return retrieved_passages
+
+# Generate answer using OpenAI's GPT-4
+def generate_answer(query: str, context: str) -> str:
     try:
-        firebase_key = get_firebase_key()
-        firebase_collection = st.secrets.get('FIREBASE_COLLECTION', 'counts')
-        logging.info(f"Firebase collection: {firebase_collection}")
-    except ValueError as e:
-        st.error(str(e))
-        logging.error(f"Error retrieving Firebase key: {str(e)}")
-        st.stop()
-    
-    # Initialize Firebase Analytics Tracking
-    try:
-        if isinstance(firebase_key, str) and firebase_key.startswith('{'):
-            # If firebase_key is a JSON string, write it to a temporary file
-            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.json') as temp_file:
-                temp_file.write(firebase_key)
-                firebase_key_path = temp_file.name
-        else:
-            firebase_key_path = firebase_key
-
-        logging.info(f"Initializing tracking with key path: {firebase_key_path}")
-        streamlit_analytics.track(
-            firestore_key_file=firebase_key_path,
-            firestore_collection_name=firebase_collection
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that answers medical questions based on the provided context. Always ground your answers in the given context and be concise."},
+                {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"}
+            ],
+            max_tokens=150,
+            n=1,
+            stop=None,
+            temperature=0.7,
         )
-        logging.info("Successfully initialized analytics tracking")
+        return response.choices[0].message.content.strip()
     except Exception as e:
-        st.error(f"Error initializing analytics tracking: {e}")
-        logging.error(f"Error initializing analytics tracking: {str(e)}")
-        st.stop()
+        st.error(f"Error generating answer: {str(e)}")
+        return "Sorry, I couldn't generate an answer at this time."
+
+# Extract frame from video at specific timestamp
+@st.cache_data
+def extract_frame(video_path: str, timestamp: float) -> Image.Image:
+    if not os.path.exists(video_path):
+        st.error(f"Video file not found: {video_path}")
+        return None
+
+    try:
+        cap = cv2.VideoCapture(video_path)
+        if not cap.isOpened():
+            st.error(f"Failed to open video file: {video_path}")
+            return None
+
+        # Get video properties
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        duration = total_frames / fps if fps > 0 else 0
+
+        st.info(f"Video properties: FPS={fps}, Total Frames={total_frames}, Duration={duration:.2f}s")
+
+        if timestamp > duration:
+            st.warning(f"Timestamp {timestamp}s exceeds video duration {duration:.2f}s. Using last frame.")
+            timestamp = duration
+
+        frame_number = int(timestamp * fps)
+        cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+        
+        ret, frame = cap.read()
+        cap.release()
+        
+        if ret:
+            return Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        else:
+            st.warning(f"Could not extract frame at timestamp {timestamp}s (frame {frame_number}) from {video_path}")
+            return None
+    except cv2.error as e:
+        st.error(f"OpenCV error: {str(e)}")
+        return None
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {str(e)}")
+        return None
+
+# Main Streamlit app
+def main():
+    streamlit_analytics.start_tracking()
     
     st.title("Step 1 Buddy")
 
-    # Your existing app code goes here
-    # ...
     # Add a new tab for disclosures
     tab1, tab2 = st.tabs(["Main", "Disclosures"])
 
@@ -124,7 +192,7 @@ def main():
                     <button style="
                         font-size: 18px;
                         padding: 12px 24px;
-                        background-color: #4CAF50;
+                        background-color: #FFB347;
                         color: white;
                         border: none;
                         border-radius: 5px;
