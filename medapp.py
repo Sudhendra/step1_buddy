@@ -149,6 +149,8 @@ import json
 firebase_key = os.getenv('FIREBASE_KEY')
 if firebase_key:
     try:
+        # Remove newlines and extra spaces
+        firebase_key = firebase_key.replace('\n', '').replace(' ', '')
         firebase_key_dict = json.loads(firebase_key)
         with open('firebase-key.json', 'w') as f:
             json.dump(firebase_key_dict, f)
@@ -156,6 +158,8 @@ if firebase_key:
         firebase_admin.initialize_app(cred)
         db = firestore.client()
         print("Firebase initialized successfully")
+    except json.JSONDecodeError as e:
+        print(f"Error parsing Firebase key: {str(e)}")
     except Exception as e:
         print(f"Error initializing Firebase: {str(e)}")
 else:
