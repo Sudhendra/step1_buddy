@@ -176,8 +176,7 @@ def get_firebase_key():
     # If not in secrets, try to get from environment variable (for local development)
     firebase_key_path = os.getenv("FIREBASE_KEY_PATH")
     if firebase_key_path and os.path.exists(firebase_key_path):
-        with open(firebase_key_path, 'r') as f:
-            return json.load(f)
+        return firebase_key_path
     
     # If neither method works, raise an error
     raise ValueError("Firebase key not found in secrets or local file.")
@@ -188,9 +187,9 @@ def main():
     firebase_key = get_firebase_key()
     firebase_collection = st.secrets.get('firebase_collection', 'counts')
 
-    # Start tracking with Firebase Firestore
-    streamlit_analytics.start_tracking(
-        firestore_key_json=firebase_key,
+    # Use streamlit_analytics.track() for tracking
+    streamlit_analytics.track(
+        firestore_key_file=firebase_key,
         firestore_collection_name=firebase_collection
     )
     
@@ -288,11 +287,7 @@ def main():
             disclosures_content = f.read()
         st.markdown(disclosures_content)
 
-    # Stop tracking at the end of the main function
-    streamlit_analytics.stop_tracking(
-        firestore_key_json=firebase_key,
-        firestore_collection_name=firebase_collection
-    )
+    # No need for stop_tracking() when using track()
 
 if __name__ == "__main__":
     main()
