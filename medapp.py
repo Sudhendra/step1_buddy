@@ -172,6 +172,10 @@ def main():
     
     st.title("Step 1 Buddy")
 
+    # Initialize session state for graph data
+    if 'graph_data' not in st.session_state:
+        st.session_state.graph_data = None
+
     # Add a new tab for disclosures
     tab1, tab2 = st.tabs(["Main", "Disclosures"])
 
@@ -195,12 +199,8 @@ def main():
             st.subheader("Generated Answer:")
             st.write(answer)
 
-            # Add the mindmap visualization within an expander
-            with st.expander("View Interactive Mindmap"):
-                st.subheader("Interactive Mindmap")
-                nodes, edges = build_mindmap(user_query, answer, related_topics)
-                config = Config(width=750, height=500, directed=True, physics=True, hierarchical=False)
-                agraph(nodes=nodes, edges=edges, config=config)
+            # Update session state with new graph data
+            st.session_state.graph_data = build_mindmap(user_query, answer, related_topics)
 
             with st.expander("View Relevant Passages"):
                 for passage in relevant_passages:
@@ -215,6 +215,24 @@ def main():
                         st.write("Failed to extract frame from video.")
                     
                     st.write("---")
+
+        # Add the mindmap visualization within an expander
+        with st.expander("View Interactive Mindmap"):
+            st.subheader("Interactive Mindmap")
+            if st.session_state.graph_data:
+                nodes, edges = st.session_state.graph_data
+                config = Config(width=750, 
+                                height=500, 
+                                directed=True, 
+                                physics=True, 
+                                hierarchical=False,
+                                nodeHighlightBehavior=True, 
+                                highlightColor="#F7A7A6",
+                                collapsible=True)
+                agraph(nodes=nodes, 
+                       edges=edges, 
+                       config=config,
+                       key="mindmap")  # Add a unique key
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
