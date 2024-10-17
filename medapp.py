@@ -170,8 +170,8 @@ def build_mindmap(query: str, answer: str, related_topics: List[str]) -> Tuple[L
 # Get Firebase credentials
 def get_firebase_key():
     # Try to get the key from Streamlit secrets first (for deployed app)
-    if 'firebase_key' in st.secrets:
-        return st.secrets['firebase_key']
+    if 'FIREBASE_KEY_PATH' in st.secrets:
+        return st.secrets['FIREBASE_KEY_PATH']
     
     # If not in secrets, try to get from environment variable (for local development)
     firebase_key_path = os.getenv("FIREBASE_KEY_PATH")
@@ -179,17 +179,17 @@ def get_firebase_key():
         return firebase_key_path
     
     # If neither method works, raise an error
-    raise ValueError("Firebase key not found in secrets or local file.")
+    raise ValueError("Firebase key path not found in secrets or local environment")
 
 # Main Streamlit app
 def main():
     # Get Firebase credentials
-    firebase_key = get_firebase_key()
+    firebase_key_path = get_firebase_key()
     firebase_collection = st.secrets.get('firebase_collection', 'counts')
 
     # Use streamlit_analytics.track() for tracking
     streamlit_analytics.track(
-        firestore_key_file=firebase_key,
+        firestore_key_file=firebase_key_path,
         firestore_collection_name=firebase_collection
     )
     
