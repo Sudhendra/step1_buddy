@@ -264,7 +264,7 @@ def main():
             disclosures_content = f.read()
         st.markdown(disclosures_content)
 
-    streamlit_analytics.stop_tracking(save_to_json="tracking/tracking.json")
+    streamlit_analytics.stop_tracking(save_to_json=os.path.join("tracking", "tracking_data.json"))
 
 if __name__ == "__main__":
     main()
