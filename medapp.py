@@ -5,7 +5,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import torch
 import json
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import os
 from PIL import Image
 import faiss
@@ -13,6 +13,7 @@ from openai import OpenAI
 import pickle
 import cv2
 from dotenv import load_dotenv
+from streamlit_agraph import agraph, Node, Edge, Config
 
 # Load environment variables
 load_dotenv()
@@ -80,23 +81,30 @@ def retrieve_passages(query: str, index, embeddings: np.ndarray, video_data: Lis
     return retrieved_passages
 
 # Generate answer using OpenAI's GPT-4
-def generate_answer(query: str, context: str) -> str:
+def generate_answer(query: str, context: str) -> Tuple[str, List[str]]:
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers medical questions based on the provided context. Always ground your answers in the given context and be concise."},
+                {"role": "system", "content": "You are a helpful assistant that answers medical questions based on the provided context. Always ground your answers in the given context and be concise. After your answer, provide a list of 3-5 related topics separated by commas."},
                 {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"}
             ],
-            max_tokens=150,
+            max_tokens=200,
             n=1,
             stop=None,
             temperature=0.7,
         )
-        return response.choices[0].message.content.strip()
+        answer = response.choices[0].message.content.strip()
+        
+        # Split the answer and related topics
+        parts = answer.split("\n\nRelated topics:")
+        main_answer = parts[0]
+        related_topics = parts[1].strip().split(", ") if len(parts) > 1 else []
+        
+        return main_answer, related_topics
     except Exception as e:
         st.error(f"Error generating answer: {str(e)}")
-        return "Sorry, I couldn't generate an answer at this time."
+        return "Sorry, I couldn't generate an answer at this time.", []
 
 # Extract frame from video at specific timestamp
 @st.cache_data
@@ -140,6 +148,24 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
         st.error(f"An unexpected error occurred: {str(e)}")
         return None
 
+# Add a new function to build the mindmap data
+def build_mindmap(query: str, answer: str, related_topics: List[str]) -> Tuple[List[Node], List[Edge]]:
+    nodes = [Node(id="query", label=query, size=25)]
+    edges = []
+    
+    # Add answer node
+    answer_node = Node(id="answer", label=answer[:50] + "...", size=20)
+    nodes.append(answer_node)
+    edges.append(Edge(source="query", target="answer"))
+    
+    # Add related topics
+    for i, topic in enumerate(related_topics):
+        topic_node = Node(id=f"topic_{i}", label=topic, size=15)
+        nodes.append(topic_node)
+        edges.append(Edge(source="answer", target=f"topic_{i}"))
+    
+    return nodes, edges
+
 # Main Streamlit app
 def main():
     streamlit_analytics.start_tracking()
@@ -164,10 +190,16 @@ def main():
             context = " ".join([p["text"] for p in relevant_passages])
             
             with st.spinner("Generating answer..."):
-                answer = generate_answer(user_query, context)
+                answer, related_topics = generate_answer(user_query, context)
 
             st.subheader("Generated Answer:")
             st.write(answer)
+
+            # Add the mindmap visualization
+            st.subheader("Interactive Mindmap")
+            nodes, edges = build_mindmap(user_query, answer, related_topics)
+            config = Config(width=750, height=500, directed=True, physics=True, hierarchical=False)
+            agraph(nodes=nodes, edges=edges, config=config)
 
             with st.expander("View Relevant Passages"):
                 for passage in relevant_passages:
