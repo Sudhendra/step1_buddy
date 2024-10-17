@@ -231,8 +231,7 @@ def main():
                                 collapsible=True)
                 agraph(nodes=nodes, 
                        edges=edges, 
-                       config=config,
-                       key="mindmap")  # Add a unique key
+                       config=config)
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
