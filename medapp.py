@@ -36,6 +36,10 @@ print(f"Using device: {device}")
 
 if 'knowledge_graph' not in st.session_state:
     st.session_state.knowledge_graph = None
+if 'graph_analysis' not in st.session_state:
+    st.session_state.graph_analysis = None
+if 'query_overview' not in st.session_state:
+    st.session_state.query_overview = None
 
 # Load SentenceTransformer model
 @st.cache_resource
@@ -177,7 +181,7 @@ def main():
     #     st.session_state.knowledge_graph = None
 
     # Add new tabs for disclosures and knowledge graph
-    tab1, tab2, tab3 = st.tabs(["Main", "Disclosures", "Knowledge Graph"])
+    tab1, tab2, tab3 = st.tabs(["Main", "Knowledge Graph", "Disclosures"])
 
     with tab1:
         topics = ["immunology", "gastroenterology", "cell biology"]
@@ -252,12 +256,6 @@ def main():
         )
 
     with tab2:
-        st.header("Disclosures")
-        with open("disclosures.txt", "r") as f:
-            disclosures_content = f.read()
-        st.markdown(disclosures_content)
-
-    with tab3:
         st.header("Knowledge Graph")
         if st.session_state.knowledge_graph:
             col1, col2 = st.columns([2, 1])
@@ -265,11 +263,22 @@ def main():
                 st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
             with col2:
                 st.subheader("Analysis")
-                st.write(st.session_state.graph_analysis)
+                if st.session_state.graph_analysis:
+                    st.write(st.session_state.graph_analysis)
+                else:
+                    st.write("No analysis available yet.")
         
         st.subheader("Query Overview")
         if st.session_state.query_overview:
             st.write(st.session_state.query_overview)
+        else:
+            st.write("No query overview available yet.")
+    
+    with tab3:
+        st.header("Disclosures")
+        with open("disclosures.txt", "r") as f:
+            disclosures_content = f.read()
+        st.markdown(disclosures_content)
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
