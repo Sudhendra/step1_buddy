@@ -217,18 +217,19 @@ def main():
                     
                     st.write("---")
 
-            # Generate and display the knowledge graph
-            with st.spinner("Generating Knowledge Graph..."):
-                try:
-                    html_file, graph_analysis, query_overview = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
-                    st.session_state.knowledge_graph = html_file
-                    st.session_state.graph_analysis = graph_analysis
-                    st.session_state.query_overview = query_overview
-                    st.success("Knowledge Graph generated!")
-                    logging.info("Knowledge graph generated successfully")
-                except Exception as e:
-                    st.error(f"Error generating knowledge graph: {str(e)}")
-                    logging.error(f"Error generating knowledge graph: {str(e)}", exc_info=True)
+            # Add a button to generate the knowledge graph
+            if st.button("Generate Knowledge Graph"):
+                with st.spinner("Generating Knowledge Graph..."):
+                    try:
+                        html_file, graph_analysis, query_overview = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
+                        st.session_state.knowledge_graph = html_file
+                        st.session_state.graph_analysis = graph_analysis
+                        st.session_state.query_overview = query_overview
+                        st.success("Knowledge Graph generated! View it in the Knowledge Graph tab.")
+                        logging.info("Knowledge graph generated successfully")
+                    except Exception as e:
+                        st.error(f"Error generating knowledge graph: {str(e)}")
+                        logging.error(f"Error generating knowledge graph: {str(e)}", exc_info=True)
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
@@ -293,10 +294,42 @@ def main():
             st.info("Generate a knowledge graph by submitting a query in the Main tab.")
 
     with tab3:
-        st.header("Disclosures")
-        with open("disclosures.txt", "r") as f:
-            disclosures_content = f.read()
-        st.markdown(disclosures_content)
+        st.header("Knowledge Graph")
+        
+        if st.session_state.knowledge_graph:
+            st.markdown("""
+                <style>
+                    .stTabs [data-baseweb="tab-panel"] {
+                        padding-top: 0;
+                    }
+                    .fullWidth {
+                        width: 100%;
+                        padding: 0;
+                        margin: 0;
+                    }
+                    .stMarkdown {
+                        max-width: 100%;
+                    }
+                </style>
+            """, unsafe_allow_html=True)
+
+            st.subheader("Interactive Graph")
+            st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
+            
+            st.subheader("Analysis")
+            if st.session_state.graph_analysis:
+                st.markdown(st.session_state.graph_analysis)
+            else:
+                st.info("No analysis available yet.")
+            
+            st.subheader("Query Overview")
+            if st.session_state.query_overview:
+                st.markdown(st.session_state.query_overview)
+            else:
+                st.info("No query overview available yet.")
+
+        else:
+            st.info("No knowledge graph available. Generate one by submitting a query and clicking 'Generate Knowledge Graph' in the Main tab.")
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
