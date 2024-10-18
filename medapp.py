@@ -183,6 +183,20 @@ def main():
     # Add new tabs for disclosures and knowledge graph
     tab1, tab2, tab3 = st.tabs(["Main", "Knowledge Graph", "Disclosures"])
 
+    if 'current_tab' not in st.session_state:
+        st.session_state.current_tab = "Main"
+
+    if tab1:
+        st.session_state.current_tab = "Main"
+    elif tab2:
+        st.session_state.current_tab = "Knowledge Graph"
+    elif tab3:
+        st.session_state.current_tab = "Disclosures"
+
+    if st.session_state.current_tab != st.session_state.get('previous_tab'):
+        st.session_state.previous_tab = st.session_state.current_tab
+        st.experimental_rerun()
+
     with tab1:
         topics = ["immunology", "gastroenterology", "cell biology"]
         selected_topic = st.selectbox("Select a topic", topics, key="topic_selectbox")
@@ -202,6 +216,11 @@ def main():
 
             st.subheader("Generated Answer:")
             st.write(answer)
+
+            # Store values in session state
+            st.session_state.user_query = user_query
+            st.session_state.answer = answer
+            st.session_state.relevant_passages = relevant_passages
 
             with st.expander("View Relevant Passages"):
                 for passage in relevant_passages:
