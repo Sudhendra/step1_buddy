@@ -169,6 +169,9 @@ def main():
     
     st.title("Step 1 Buddy")
 
+    if 'knowledge_graph' not in st.session_state:
+        st.session_state.knowledge_graph = None
+
     # Add new tabs for disclosures and knowledge graph
     tab1, tab2, tab3 = st.tabs(["Main", "Disclosures", "Knowledge Graph"])
 
@@ -210,7 +213,10 @@ def main():
             if st.button("Generate Knowledge Graph"):
                 with st.spinner("Generating Knowledge Graph..."):
                     fig = generate_knowledge_graph(user_query, relevant_passages, answer)
-                    st.pyplot(fig)
+                    st.session_state.knowledge_graph = fig
+
+            if st.session_state.knowledge_graph is not None:
+                st.pyplot(st.session_state.knowledge_graph)
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
