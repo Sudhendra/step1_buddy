@@ -147,6 +147,11 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
 firebase_key = os.getenv('FIREBASE_KEY')
 if firebase_key:
     try:
+        # Decode the base64 encoded key
+        # decoded_key = base64.b64decode(firebase_key).decode('utf-8')
+        # firebase_key_dict = json.loads(decoded_key)
+        # with open('firebase-key.json', 'w') as f:
+        #     json.dump(firebase_key_dict, f)
         cred = credentials.Certificate('firebase-key.json')
         firebase_admin.initialize_app(cred)
         db = firestore.client()
