@@ -12,4 +12,4 @@ firebase-admin
 logging
 networkx
 matplotlib
-plotly
+pyvis==0.3.1
