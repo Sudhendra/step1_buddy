@@ -256,13 +256,6 @@ def main():
             disclosures_content = f.read()
         st.markdown(disclosures_content)
 
-    # with tab3:
-    #     st.header("Knowledge Graph")
-    #     if st.session_state.knowledge_graph is not None:
-    #         st.plotly_chart(st.session_state.knowledge_graph)
-    #     else:
-    #         st.write("No Knowledge Graph generated yet. Use the 'Generate Knowledge Graph' button in the main tab to create one.")
-
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
 if __name__ == "__main__":
