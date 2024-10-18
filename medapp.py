@@ -213,21 +213,17 @@ def main():
                     
                     st.write("---")
 
-            # Add a button to generate and display the knowledge graph
-            if st.button("Generate Knowledge Graph"):
-                with st.spinner("Generating Knowledge Graph..."):
-                    try:
-                        fig = generate_knowledge_graph(user_query, relevant_passages, answer)
-                        st.session_state.knowledge_graph = fig
-                        st.success("Knowledge Graph generated! Check the 'Knowledge Graph' tab to view it.")
-                        logging.info("Knowledge graph generated successfully")
-                    except Exception as e:
-                        st.error(f"Error generating knowledge graph: {str(e)}")
-                        logging.error(f"Error generating knowledge graph: {str(e)}", exc_info=True)
-
-            # Remove this part from the main tab
-            # if st.session_state.knowledge_graph is not None:
-            #     st.pyplot(st.session_state.knowledge_graph)
+            # Generate and display the knowledge graph
+            with st.spinner("Generating Knowledge Graph..."):
+                try:
+                    fig = generate_knowledge_graph(user_query, relevant_passages, answer)
+                    st.session_state.knowledge_graph = fig
+                    st.success("Knowledge Graph generated!")
+                    st.pyplot(fig)
+                    logging.info("Knowledge graph generated successfully")
+                except Exception as e:
+                    st.error(f"Error generating knowledge graph: {str(e)}")
+                    logging.error(f"Error generating knowledge graph: {str(e)}", exc_info=True)
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
