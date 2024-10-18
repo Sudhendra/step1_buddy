@@ -258,22 +258,40 @@ def main():
     with tab2:
         st.header("Knowledge Graph")
         if st.session_state.knowledge_graph:
-            col1, col2 = st.columns([2, 1])
+            st.markdown("""
+                <style>
+                    .stTabs [data-baseweb="tab-panel"] {
+                        padding-top: 0;
+                    }
+                    .fullWidth {
+                        width: 100%;
+                        padding: 0;
+                        margin: 0;
+                    }
+                </style>
+            """, unsafe_allow_html=True)
+
+            col1, col2 = st.columns([3, 2])
             with col1:
+                st.subheader("Interactive Graph")
                 st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
+            
             with col2:
                 st.subheader("Analysis")
                 if st.session_state.graph_analysis:
-                    st.write(st.session_state.graph_analysis)
+                    st.markdown(st.session_state.graph_analysis)
                 else:
-                    st.write("No analysis available yet.")
-        
-        st.subheader("Query Overview")
-        if st.session_state.query_overview:
-            st.write(st.session_state.query_overview)
+                    st.info("No analysis available yet.")
+                
+                st.subheader("Query Overview")
+                if st.session_state.query_overview:
+                    st.markdown(st.session_state.query_overview)
+                else:
+                    st.info("No query overview available yet.")
+
         else:
-            st.write("No query overview available yet.")
-    
+            st.info("Generate a knowledge graph by submitting a query in the Main tab.")
+
     with tab3:
         st.header("Disclosures")
         with open("disclosures.txt", "r") as f:
