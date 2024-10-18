@@ -16,6 +16,8 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
 import base64
+import matplotlib.pyplot as plt
+from knowledge_graph import generate_knowledge_graph
 
 # Load environment variables
 load_dotenv()
@@ -167,8 +169,8 @@ def main():
     
     st.title("Step 1 Buddy")
 
-    # Add a new tab for disclosures
-    tab1, tab2 = st.tabs(["Main", "Disclosures"])
+    # Add new tabs for disclosures and knowledge graph
+    tab1, tab2, tab3 = st.tabs(["Main", "Disclosures", "Knowledge Graph"])
 
     with tab1:
         topics = ["immunology", "gastroenterology", "cell biology"]
@@ -204,6 +206,12 @@ def main():
                     
                     st.write("---")
 
+            # Add a button to generate and display the knowledge graph
+            if st.button("Generate Knowledge Graph"):
+                with st.spinner("Generating Knowledge Graph..."):
+                    fig = generate_knowledge_graph(user_query, relevant_passages, answer)
+                    st.pyplot(fig)
+
         # Add the feedback button at the end of the main tab
         st.markdown("---")
         st.markdown(
@@ -234,6 +242,10 @@ def main():
         with open("disclosures.txt", "r") as f:
             disclosures_content = f.read()
         st.markdown(disclosures_content)
+
+    with tab3:
+        st.header("Knowledge Graph")
+        st.write("Click the 'Generate Knowledge Graph' button in the main tab to visualize the relationships between your query, relevant passages, and key concepts.")
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
