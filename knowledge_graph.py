@@ -14,7 +14,9 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     
     # Add key concepts as nodes
     for concept in key_concepts:
-        G.add_node(concept, color='#90EE90', size=25, title=concept, group='key_concept')
+        # Generate extra information for the concept
+        extra_info = generate_concept_info(concept, relevant_passages)
+        G.add_node(concept, color='#90EE90', size=25, title=extra_info, group='key_concept', label=concept)
         G.add_edge(query, concept)
         
         # Explain the relationship between query and concept
@@ -47,13 +49,14 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     net.toggle_physics(True)
     net.show_buttons(filter_=['physics'])
     
-    # Set node colors based on groups
+    # Set node colors and labels based on groups
     for node in net.nodes:
         if 'group' in node:
             if node['group'] == 'query':
                 node['color'] = '#ADD8E6'
             elif node['group'] == 'key_concept':
                 node['color'] = '#90EE90'
+                node['label'] = node['id']  # Show only the name for key concepts
             elif 'immunology' in node['group'].lower():
                 node['color'] = '#FFB3BA'
             elif 'gastroenterology' in node['group'].lower():
@@ -143,6 +146,22 @@ def explain_relationship(source: str, target: str, relevant_passages: List[Dict]
             {"role": "user", "content": f"Source: {source}\nTarget: {target}\nContext: {context}\n\nExplain the relationship:"}
         ],
         max_tokens=50,
+        n=1,
+        stop=None,
+        temperature=0.7,
+    )
+    return response.choices[0].message.content.strip()
+
+def generate_concept_info(concept: str, relevant_passages: List[Dict]) -> str:
+    context = " ".join([p['text'] for p in relevant_passages])
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Generate a brief explanation of the given medical concept based on the context. Include key points and relevance to the topic."},
+            {"role": "user", "content": f"Concept: {concept}\nContext: {context}\n\nExplain the concept:"}
+        ],
+        max_tokens=100,
         n=1,
         stop=None,
         temperature=0.7,
