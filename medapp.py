@@ -18,6 +18,7 @@ from firebase_admin import credentials, firestore
 import base64
 import matplotlib.pyplot as plt
 from knowledge_graph import generate_knowledge_graph
+import logging
 
 # Load environment variables
 load_dotenv()
@@ -32,6 +33,9 @@ client = OpenAI(api_key=key)
 # Check for GPU availability
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
+
+if 'knowledge_graph' not in st.session_state:
+    st.session_state.knowledge_graph = None
 
 # Load SentenceTransformer model
 @st.cache_resource
@@ -169,8 +173,8 @@ def main():
     
     st.title("Step 1 Buddy")
 
-    if 'knowledge_graph' not in st.session_state:
-        st.session_state.knowledge_graph = None
+    # if 'knowledge_graph' not in st.session_state:
+    #     st.session_state.knowledge_graph = None
 
     # Add new tabs for disclosures and knowledge graph
     tab1, tab2, tab3 = st.tabs(["Main", "Disclosures", "Knowledge Graph"])
@@ -212,11 +216,18 @@ def main():
             # Add a button to generate and display the knowledge graph
             if st.button("Generate Knowledge Graph"):
                 with st.spinner("Generating Knowledge Graph..."):
-                    fig = generate_knowledge_graph(user_query, relevant_passages, answer)
-                    st.session_state.knowledge_graph = fig
+                    try:
+                        fig = generate_knowledge_graph(user_query, relevant_passages, answer)
+                        st.session_state.knowledge_graph = fig
+                        st.success("Knowledge Graph generated! Check the 'Knowledge Graph' tab to view it.")
+                        logging.info("Knowledge graph generated successfully")
+                    except Exception as e:
+                        st.error(f"Error generating knowledge graph: {str(e)}")
+                        logging.error(f"Error generating knowledge graph: {str(e)}", exc_info=True)
 
-            if st.session_state.knowledge_graph is not None:
-                st.pyplot(st.session_state.knowledge_graph)
+            # Remove this part from the main tab
+            # if st.session_state.knowledge_graph is not None:
+            #     st.pyplot(st.session_state.knowledge_graph)
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
@@ -251,7 +262,10 @@ def main():
 
     with tab3:
         st.header("Knowledge Graph")
-        st.write("Click the 'Generate Knowledge Graph' button in the main tab to visualize the relationships between your query, relevant passages, and key concepts.")
+        if st.session_state.knowledge_graph is not None:
+            st.pyplot(st.session_state.knowledge_graph)
+        else:
+            st.write("No Knowledge Graph generated yet. Use the 'Generate Knowledge Graph' button in the main tab to create one.")
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
