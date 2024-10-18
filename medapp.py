@@ -219,7 +219,7 @@ def main():
                     html_file = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
                     st.session_state.knowledge_graph = html_file
                     st.success("Knowledge Graph generated!")
-                    st.components.v1.html(open(html_file, 'r').read(), height=600)
+                    st.components.v1.html(open(html_file, 'r').read(), height=800, scrolling=True)
                     logging.info("Knowledge graph generated successfully")
                 except Exception as e:
                     st.error(f"Error generating knowledge graph: {str(e)}")
