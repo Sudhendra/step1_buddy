@@ -216,7 +216,7 @@ def main():
             # Generate and display the knowledge graph
             with st.spinner("Generating Knowledge Graph..."):
                 try:
-                    fig = generate_knowledge_graph(user_query, relevant_passages, answer)
+                    fig = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
                     st.session_state.knowledge_graph = fig
                     st.success("Knowledge Graph generated!")
                     st.pyplot(fig)
