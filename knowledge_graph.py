@@ -1,9 +1,9 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 from typing import List, Dict
-import openai
 import os
 from collections import defaultdict
+from openai import OpenAI
 
 def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: str, all_data: List[Dict]) -> plt.Figure:
     G = nx.Graph()
@@ -53,27 +53,27 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     return plt.gcf()
 
 def extract_key_concepts(query: str, answer: str) -> List[str]:
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-    response = openai.ChatCompletion.create(
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Extract 5-7 key concepts from the given query and answer."},
             {"role": "user", "content": f"Query: {query}\nAnswer: {answer}"}
         ]
     )
-    concepts = response.choices[0].message['content'].strip().split('\n')
+    concepts = response.choices[0].message.content.strip().split('\n')
     return [concept.strip() for concept in concepts if concept.strip()]
 
 def generate_connections(query: str, key_concepts: List[str], related_topics: List[str]) -> List[Dict]:
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-    response = openai.ChatCompletion.create(
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "Generate meaningful connections between the query, key concepts, and related topics."},
             {"role": "user", "content": f"Query: {query}\nKey Concepts: {', '.join(key_concepts)}\nRelated Topics: {', '.join(related_topics)}"}
         ]
     )
-    connections_text = response.choices[0].message['content'].strip().split('\n')
+    connections_text = response.choices[0].message.content.strip().split('\n')
     connections = []
     for connection in connections_text:
         parts = connection.split(' - ')
