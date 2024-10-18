@@ -23,7 +23,7 @@ jobs:
           
       - name: Create Firebase key file
         run: |
-          echo '${{ secrets.FIREBASE_KEY }}' | sed 's/\\n/\n/g' > firebase-key.json
+          echo '${{ secrets.FIREBASE_KEY }}' | base64 --decode > firebase-key.json
       
       - name: Debug - Print Firebase key file content
         run: cat firebase-key.json
