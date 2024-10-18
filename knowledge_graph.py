@@ -1,12 +1,11 @@
 import networkx as nx
 from pyvis.network import Network
-from typing import List, Dict
+from typing import List, Dict, Tuple
 import os
 from collections import defaultdict
 from openai import OpenAI
-import itertools
 
-def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: str, all_data: List[Dict]) -> str:
+def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: str, all_data: List[Dict]) -> Tuple[str, str, str]:
     G = nx.Graph()
     G.add_node(query, color='#ADD8E6', size=30, title=query, group='query')
     
@@ -41,7 +40,7 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
             G.edges[concept, topic_node]['title'] = explanation
     
     # Create Pyvis network
-    net = Network(height="800px", width="100%", bgcolor="#FFFFFF", font_color="black")
+    net = Network(height="600px", width="100%", bgcolor="#FFFFFF", font_color="black")
     net.from_nx(G)
     
     # Customize the graph appearance
@@ -68,7 +67,37 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     html_file = "knowledge_graph.html"
     net.save_graph(html_file)
     
-    return html_file
+    # Generate analysis and overview
+    graph_analysis = analyze_graph(G, query)
+    query_overview = generate_query_overview(query, answer, relevant_passages, G)
+    
+    return html_file, graph_analysis, query_overview
+
+def analyze_graph(G: nx.Graph, query: str) -> str:
+    analysis = f"Analysis of the knowledge graph for query: '{query}'\n\n"
+    
+    for node in G.nodes():
+        if node != query:
+            analysis += f"Node: {node}\n"
+            analysis += f"Relationship to query: {G.edges[query, node].get('title', 'No direct relationship')}\n"
+            analysis += f"Connected to: {', '.join(G.neighbors(node))}\n\n"
+    
+    return analysis
+
+def generate_query_overview(query: str, answer: str, relevant_passages: List[Dict], G: nx.Graph) -> str:
+    context = " ".join([p['text'] for p in relevant_passages])
+    key_concepts = [node for node in G.nodes() if G.nodes[node]['group'] == 'key_concept']
+    
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Generate a comprehensive overview of the query, its answer, and how it relates to the key concepts. Focus on the interconnections between different topics."},
+            {"role": "user", "content": f"Query: {query}\nAnswer: {answer}\nKey Concepts: {', '.join(key_concepts)}\nContext: {context}"}
+        ]
+    )
+    
+    return response.choices[0].message.content.strip()
 
 def extract_key_concepts(query: str, answer: str, relevant_passages: List[Dict]) -> List[str]:
     context = " ".join([p['text'] for p in relevant_passages])

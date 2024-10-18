@@ -216,10 +216,11 @@ def main():
             # Generate and display the knowledge graph
             with st.spinner("Generating Knowledge Graph..."):
                 try:
-                    html_file = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
+                    html_file, graph_analysis, query_overview = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
                     st.session_state.knowledge_graph = html_file
+                    st.session_state.graph_analysis = graph_analysis
+                    st.session_state.query_overview = query_overview
                     st.success("Knowledge Graph generated!")
-                    st.components.v1.html(open(html_file, 'r').read(), height=800, scrolling=True)
                     logging.info("Knowledge graph generated successfully")
                 except Exception as e:
                     st.error(f"Error generating knowledge graph: {str(e)}")
@@ -255,6 +256,20 @@ def main():
         with open("disclosures.txt", "r") as f:
             disclosures_content = f.read()
         st.markdown(disclosures_content)
+
+    with tab3:
+        st.header("Knowledge Graph")
+        if st.session_state.knowledge_graph:
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
+            with col2:
+                st.subheader("Analysis")
+                st.write(st.session_state.graph_analysis)
+        
+        st.subheader("Query Overview")
+        if st.session_state.query_overview:
+            st.write(st.session_state.query_overview)
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
