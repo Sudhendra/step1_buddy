@@ -268,26 +268,26 @@ def main():
                         padding: 0;
                         margin: 0;
                     }
+                    .stMarkdown {
+                        max-width: 100%;
+                    }
                 </style>
             """, unsafe_allow_html=True)
 
-            col1, col2 = st.columns([3, 2])
-            with col1:
-                st.subheader("Interactive Graph")
-                st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
+            st.subheader("Interactive Graph")
+            st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
             
-            with col2:
-                st.subheader("Analysis")
-                if st.session_state.graph_analysis:
-                    st.markdown(st.session_state.graph_analysis)
-                else:
-                    st.info("No analysis available yet.")
-                
-                st.subheader("Query Overview")
-                if st.session_state.query_overview:
-                    st.markdown(st.session_state.query_overview)
-                else:
-                    st.info("No query overview available yet.")
+            st.subheader("Analysis")
+            if st.session_state.graph_analysis:
+                st.markdown(st.session_state.graph_analysis)
+            else:
+                st.info("No analysis available yet.")
+            
+            st.subheader("Query Overview")
+            if st.session_state.query_overview:
+                st.markdown(st.session_state.query_overview)
+            else:
+                st.info("No query overview available yet.")
 
         else:
             st.info("Generate a knowledge graph by submitting a query in the Main tab.")
