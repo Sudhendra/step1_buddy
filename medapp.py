@@ -147,26 +147,6 @@ import os
 print(f"Current working directory: {os.getcwd()}")
 print(f"Files in current directory: {os.listdir()}")
 
-<<<<<<< HEAD
-firebase_key = os.getenv('FIREBASE_KEY')
-if firebase_key:
-    try:
-        # Remove newlines and extra spaces
-        firebase_key = firebase_key.replace('\n', '').replace(' ', '')
-        firebase_key_dict = json.loads(firebase_key)
-        with open('firebase-key.json', 'w') as f:
-            json.dump(firebase_key_dict, f)
-        cred = credentials.Certificate('firebase-key.json')
-        firebase_admin.initialize_app(cred)
-        db = firestore.client()
-        print("Firebase initialized successfully")
-    except json.JSONDecodeError as e:
-        print(f"Error parsing Firebase key: {str(e)}")
-    except Exception as e:
-        print(f"Error initializing Firebase: {str(e)}")
-else:
-    print("FIREBASE_KEY environment variable not found")
-=======
 try:
     with open("firebase-key.json", "r") as f:
         print(f"Firebase key file contents: {f.read()}")
@@ -176,7 +156,6 @@ try:
 except Exception as e:
     print(f"Error initializing Firebase: {str(e)}")
     # You might want to add a fallback here or skip Firebase initialization
->>>>>>> parent of 908d8df (create key json in streamlit deployment environment on the fly)
 
 # Main Streamlit app
 def main():
