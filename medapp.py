@@ -219,7 +219,7 @@ def main():
                     fig = generate_knowledge_graph(user_query, relevant_passages, answer, video_data)
                     st.session_state.knowledge_graph = fig
                     st.success("Knowledge Graph generated!")
-                    st.pyplot(fig)
+                    st.plotly_chart(fig)
                     logging.info("Knowledge graph generated successfully")
                 except Exception as e:
                     st.error(f"Error generating knowledge graph: {str(e)}")
@@ -259,7 +259,7 @@ def main():
     with tab3:
         st.header("Knowledge Graph")
         if st.session_state.knowledge_graph is not None:
-            st.pyplot(st.session_state.knowledge_graph)
+            st.plotly_chart(st.session_state.knowledge_graph)
         else:
             st.write("No Knowledge Graph generated yet. Use the 'Generate Knowledge Graph' button in the main tab to create one.")
 

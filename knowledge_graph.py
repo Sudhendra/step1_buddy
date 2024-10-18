@@ -1,11 +1,11 @@
 import networkx as nx
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from typing import List, Dict
 import os
 from collections import defaultdict
 from openai import OpenAI
 
-def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: str, all_data: List[Dict]) -> plt.Figure:
+def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: str, all_data: List[Dict]) -> go.Figure:
     G = nx.Graph()
     G.add_node(query, color='lightblue', size=3000)
     
@@ -39,27 +39,66 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     for connection in connections:
         G.add_edge(connection['source'], connection['target'], label=connection['relationship'])
     
-    # Create the plot
-    plt.figure(figsize=(20, 12))
-    pos = nx.spring_layout(G, k=0.9, iterations=50)
-    
-    # Draw nodes
-    nx.draw_networkx_nodes(G, pos, node_size=[G.nodes[node]['size'] for node in G.nodes()],
-                           node_color=[G.nodes[node]['color'] for node in G.nodes()], alpha=0.8)
-    
-    # Draw edges
-    nx.draw_networkx_edges(G, pos, edge_color='gray', arrows=True, arrowsize=20)
-    
-    # Draw labels
-    nx.draw_networkx_labels(G, pos, font_size=8, font_weight="bold")
-    
-    # Add edge labels
-    edge_labels = nx.get_edge_attributes(G, 'label')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=6)
-    
-    plt.title(f"Knowledge Graph for: {query}", fontsize=16)
-    plt.axis('off')
-    return plt.gcf()
+    # Prepare data for Plotly
+    pos = nx.spring_layout(G, k=0.5, iterations=50)
+    edge_x = []
+    edge_y = []
+    for edge in G.edges():
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        edge_x.append(x0)
+        edge_x.append(x1)
+        edge_x.append(None)  # None to break the line
+        edge_y.append(y0)
+        edge_y.append(y1)
+        edge_y.append(None)  # None to break the line
+
+    edge_trace = go.Scatter(
+        x=edge_x, y=edge_y,
+        line=dict(width=0.5, color='gray'),
+        hoverinfo='none',
+        mode='lines'
+    )
+
+    node_x = []
+    node_y = []
+    node_color = []
+    node_size = []
+    for node in G.nodes():
+        x, y = pos[node]
+        node_x.append(x)
+        node_y.append(y)
+        node_color.append(G.nodes[node]['color'])
+        node_size.append(G.nodes[node]['size'])
+
+    node_trace = go.Scatter(
+        x=node_x, y=node_y,
+        mode='markers+text',
+        text=list(G.nodes()),
+        textposition="top center",
+        marker=dict(
+            showscale=True,
+            colorscale='YlGnBu',
+            size=node_size,
+            color=node_color,
+            line_width=2
+        ),
+        hoverinfo='text'
+    )
+
+    # Create the figure
+    fig = go.Figure(data=[edge_trace, node_trace],
+                    layout=go.Layout(
+                        title=f'Knowledge Graph for: {query}',
+                        titlefont_size=16,
+                        showlegend=False,
+                        hovermode='closest',
+                        margin=dict(b=0,l=0,r=0,t=40),
+                        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+                    ))
+
+    return fig
 
 def extract_key_concepts(query: str, answer: str) -> List[str]:
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
