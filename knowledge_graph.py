@@ -11,12 +11,16 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     G.add_node(query, color='#ADD8E6', size=30, title=query, group='query')
     
     # Extract key concepts from the query and answer
-    key_concepts = extract_key_concepts(query, answer)
+    key_concepts = extract_key_concepts(query, answer, relevant_passages)
     
     # Add key concepts as nodes
     for concept in key_concepts:
         G.add_node(concept, color='#90EE90', size=25, title=concept, group='key_concept')
         G.add_edge(query, concept)
+        
+        # Explain the relationship between query and concept
+        explanation = explain_relationship(query, concept, relevant_passages)
+        G.edges[query, concept]['title'] = explanation
     
     # Process all data to find related topics across all subjects
     related_topics = defaultdict(set)
@@ -31,11 +35,10 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
             topic_node = f"{topic}: {text[:50]}..."
             G.add_node(topic_node, color='#FFFFE0', size=20, title=text, group=topic.split()[0])
             G.add_edge(concept, topic_node)
-    
-    # Generate connections between concepts and topics
-    connections = generate_connections(query, key_concepts, list(related_topics.keys()))
-    for connection in connections:
-        G.add_edge(connection['source'], connection['target'], title=connection['relationship'])
+            
+            # Explain the relationship between concept and topic
+            explanation = explain_relationship(concept, topic, [{'text': text}])
+            G.edges[concept, topic_node]['title'] = explanation
     
     # Create Pyvis network
     net = Network(height="800px", width="100%", bgcolor="#FFFFFF", font_color="black")
@@ -67,13 +70,14 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     
     return html_file
 
-def extract_key_concepts(query: str, answer: str) -> List[str]:
+def extract_key_concepts(query: str, answer: str, relevant_passages: List[Dict]) -> List[str]:
+    context = " ".join([p['text'] for p in relevant_passages])
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Extract 10-15 key concepts from the given query and answer. Include concepts that might be related to other medical fields."},
-            {"role": "user", "content": f"Query: {query}\nAnswer: {answer}"}
+            {"role": "system", "content": "Extract 5-10 key concepts from the given query, answer, and context. Focus on medical terms and concepts."},
+            {"role": "user", "content": f"Query: {query}\nAnswer: {answer}\nContext: {context}"}
         ]
     )
     concepts = response.choices[0].message.content.strip().split('\n')
@@ -99,3 +103,19 @@ def generate_connections(query: str, key_concepts: List[str], related_topics: Li
                 'relationship': parts[1].strip()
             })
     return connections
+
+def explain_relationship(source: str, target: str, relevant_passages: List[Dict]) -> str:
+    context = " ".join([p['text'] for p in relevant_passages])
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Explain the relationship between two medical concepts based on the given context. Be concise and specific."},
+            {"role": "user", "content": f"Source: {source}\nTarget: {target}\nContext: {context}\n\nExplain the relationship:"}
+        ],
+        max_tokens=50,
+        n=1,
+        stop=None,
+        temperature=0.7,
+    )
+    return response.choices[0].message.content.strip()
