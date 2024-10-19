@@ -171,6 +171,14 @@ if firebase_key:
 else:
     print("FIREBASE_KEY environment variable not found")
 
+def setup_footer():
+    st.markdown(
+        """
+        ---
+        Made with ❤️ for 🐼.
+        """
+    )
+
 # Main Streamlit app
 def main():
     streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
@@ -328,6 +336,8 @@ def main():
         st.markdown(disclosures_content)
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
+
+    setup_footer()
 
 if __name__ == "__main__":
     main()
