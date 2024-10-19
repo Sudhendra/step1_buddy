@@ -34,7 +34,17 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     for concept, topics in related_topics.items():
         for topic, text in topics:
             topic_node = f"{topic}: {text[:50]}..."
-            G.add_node(topic_node, color='#FFFFE0', size=20, title=text, group=topic.split()[0])
+            subject = topic.split()[0].lower()
+            if 'immunology' in subject:
+                color = '#FFB3BA'  # Light red for immunology
+            elif 'gastroenterology' in subject:
+                color = '#BAFFC9'  # Light green for gastroenterology
+            elif 'cell biology' in subject:
+                color = '#BAE1FF'  # Light blue for cell biology
+            else:
+                color = '#FFFFE0'  # Light yellow for other subjects
+            
+            G.add_node(topic_node, color=color, size=20, title=text, group=subject, label=topic.split(':')[0])
             G.add_edge(concept, topic_node)
             
             # Explain the relationship between concept and topic
@@ -53,18 +63,22 @@ def generate_knowledge_graph(query: str, relevant_passages: List[Dict], answer: 
     for node in net.nodes:
         if 'group' in node:
             if node['group'] == 'query':
-                node['color'] = '#ADD8E6'
+                node['color'] = '#ADD8E6'  # Light blue
             elif node['group'] == 'key_concept':
-                node['color'] = '#90EE90'
+                node['color'] = '#90EE90'  # Light green
                 node['label'] = node['id']  # Show only the name for key concepts
-            elif 'immunology' in node['group'].lower():
-                node['color'] = '#FFB3BA'
-            elif 'gastroenterology' in node['group'].lower():
-                node['color'] = '#BAFFC9'
-            elif 'cell biology' in node['group'].lower():
-                node['color'] = '#BAE1FF'
+            elif 'immunology' in node['group']:
+                node['color'] = '#FFB3BA'  # Light red
+            elif 'gastroenterology' in node['group']:
+                node['color'] = '#BAFFC9'  # Light green
+            elif 'cell biology' in node['group']:
+                node['color'] = '#BAE1FF'  # Light blue
             else:
-                node['color'] = '#FFFFE0'
+                node['color'] = '#FFFFE0'  # Light yellow
+        
+        # Adjust label for non-key concept nodes
+        if node['group'] not in ['query', 'key_concept']:
+            node['label'] = node['label'].split(':')[0]  # Show only the video title
     
     # Save the graph as an HTML file
     html_file = "knowledge_graph.html"
