@@ -181,23 +181,23 @@ def main():
     # Add new tabs for disclosures and mindmap
     tab1, tab2, tab3 = st.tabs(["Main", "Mindmap", "Disclosures"])
 
+    topics = ["immunology", "gastroenterology", "cell biology"]
+    selected_topic = st.sidebar.selectbox("Select a topic", topics, key="topic_selectbox")
+    video_data, index, embeddings = load_and_preprocess_data(selected_topic)
+
     with tab1:
-        main_tab_content()
+        main_tab_content(video_data, index, embeddings)
 
     with tab2:
-        mindmap_tab_content()
+        mindmap_tab_content(video_data)
 
     with tab3:
         disclosures_tab_content()
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
-def main_tab_content():
+def main_tab_content(video_data, index, embeddings):
     # Content for the main tab
-    topics = ["immunology", "gastroenterology", "cell biology"]
-    selected_topic = st.selectbox("Select a topic", topics, key="topic_selectbox")
-
-    video_data, index, embeddings = load_and_preprocess_data(selected_topic)
     user_query = st.text_input("Enter your question:", key="user_query_input")
     submit_button = st.button("Submit", key="submit_button")
 
@@ -260,7 +260,7 @@ def main_tab_content():
         unsafe_allow_html=True
     )
 
-def mindmap_tab_content():
+def mindmap_tab_content(video_data):
     st.header("Interactive Mindmap")
     
     if 'user_query' in st.session_state and 'answer' in st.session_state and 'relevant_passages' in st.session_state:
