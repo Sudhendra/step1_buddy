@@ -175,13 +175,13 @@ else:
 
 # Main Streamlit app
 def main():
-    streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
-    
     st.set_page_config(page_title="Step 1 Buddy", page_icon="⚕️", layout="wide", initial_sidebar_state="expanded")
     st.markdown("""
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <script>mermaid.initialize({startOnLoad:true});</script>
     """, unsafe_allow_html=True)
+    
+    streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
     
     st.title("Step 1 Buddy")
 
