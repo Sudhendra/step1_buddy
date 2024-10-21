@@ -10,6 +10,4 @@ python-dotenv
 streamlit-agraph
 firebase-admin
 logging
-networkx
 matplotlib
-pyvis==0.3.1

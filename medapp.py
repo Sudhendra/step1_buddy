@@ -18,6 +18,7 @@ from firebase_admin import credentials, firestore
 import base64
 import matplotlib.pyplot as plt
 from knowledge_graph import generate_knowledge_graph
+from mindmap import get_mindmap_data
 import logging
 
 # Load environment variables
@@ -273,12 +274,13 @@ def main():
         )
 
     with tab2:
-        st.header("Knowledge Graph")
+        st.header("Knowledge Graph and Mindmap")
         
         if 'user_query' in st.session_state and 'answer' in st.session_state and 'relevant_passages' in st.session_state:
-            if st.button("Generate Knowledge Graph"):
-                with st.spinner("Generating Knowledge Graph..."):
+            if st.button("Generate Knowledge Graph and Mindmap"):
+                with st.spinner("Generating Knowledge Graph and Mindmap..."):
                     try:
+                        # Generate Knowledge Graph
                         html_file, graph_analysis, query_overview = generate_knowledge_graph(
                             st.session_state.user_query, 
                             st.session_state.relevant_passages, 
@@ -288,13 +290,25 @@ def main():
                         st.session_state.knowledge_graph = html_file
                         st.session_state.graph_analysis = graph_analysis
                         st.session_state.query_overview = query_overview
-                        st.success("Knowledge Graph generated successfully!")
-                        logging.info("Knowledge graph generated successfully")
-                    except Exception as e:
-                        st.error(f"Error generating knowledge graph: {str(e)}")
-                        logging.error(f"Error generating knowledge graph: {str(e)}", exc_info=True)
 
-        if st.session_state.get('knowledge_graph'):
+                        # Generate Mindmap
+                        mindmap_html, mindmap_analysis, mindmap_structure = get_mindmap_data(
+                            st.session_state.user_query,
+                            st.session_state.relevant_passages,
+                            st.session_state.answer,
+                            video_data
+                        )
+                        st.session_state.mindmap = mindmap_html
+                        st.session_state.mindmap_analysis = mindmap_analysis
+                        st.session_state.mindmap_structure = mindmap_structure
+
+                        st.success("Knowledge Graph and Mindmap generated successfully!")
+                        logging.info("Knowledge graph and Mindmap generated successfully")
+                    except Exception as e:
+                        st.error(f"Error generating knowledge graph and mindmap: {str(e)}")
+                        logging.error(f"Error generating knowledge graph and mindmap: {str(e)}", exc_info=True)
+
+        if st.session_state.get('knowledge_graph') and st.session_state.get('mindmap'):
             st.markdown("""
                 <style>
                     .stTabs [data-baseweb="tab-panel"] {
@@ -311,14 +325,23 @@ def main():
                 </style>
             """, unsafe_allow_html=True)
 
-            st.subheader("Interactive Graph")
+            st.subheader("Interactive Knowledge Graph")
             st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
             
-            st.subheader("Analysis")
+            st.subheader("Interactive Mindmap")
+            st.components.v1.html(open(st.session_state.mindmap, 'r').read(), height=600, scrolling=True)
+            
+            st.subheader("Knowledge Graph Analysis")
             if st.session_state.graph_analysis:
                 st.markdown(st.session_state.graph_analysis)
             else:
-                st.info("No analysis available yet.")
+                st.info("No knowledge graph analysis available yet.")
+            
+            st.subheader("Mindmap Analysis")
+            if st.session_state.mindmap_analysis:
+                st.markdown(st.session_state.mindmap_analysis)
+            else:
+                st.info("No mindmap analysis available yet.")
             
             st.subheader("Query Overview")
             if st.session_state.query_overview:
@@ -327,7 +350,7 @@ def main():
                 st.info("No query overview available yet.")
 
         else:
-            st.info("Generate a knowledge graph by submitting a query in the Main tab.")
+            st.info("Generate a knowledge graph and mindmap by submitting a query in the Main tab.")
 
     with tab3:
         st.header("Disclosures")
