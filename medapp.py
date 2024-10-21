@@ -324,15 +324,14 @@ def parse_mindmap_structure(mindmap_structure):
         nodes.append(Node(id=node_id, label=title, size=20))
         
         if parent_stack:
-            while len(parent_stack) >= level:
+            while parent_stack and len(parent_stack) >= level:
                 parent_stack.pop()
             
             if parent_stack:
                 parent_id = parent_stack[-1]
                 edges.append(Edge(source=parent_id, target=node_id))
         
-        if level > len(parent_stack):
-            parent_stack.append(node_id)
+        parent_stack.append(node_id)
     
     return nodes, edges
 
