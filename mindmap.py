@@ -31,33 +31,8 @@ def generate_mindmap(query, relevant_passages, answer, all_data):
     
     analysis = analysis_response.choices[0].message.content.strip()
     
-    # Create HTML content for the mindmap
-    html_content = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
-    </head>
-    <body>
-        <div id="mindmap"></div>
-        <script>
-            const mindmapContent = `{mindmap_structure}`;
-            markmap.autoLoader.renderString(mindmapContent, document.getElementById('mindmap'));
-        </script>
-    </body>
-    </html>
-    """
-
-    # Save the HTML content to a file
-    html_file = "mindmap.html"
-    with open(html_file, "w", encoding="utf-8") as f:
-        f.write(html_content)
-
-    return html_file, analysis, mindmap_structure
+    return mindmap_structure, analysis
 
 def get_mindmap_data(query, relevant_passages, answer, all_data):
-    html_file, analysis, mindmap_structure = generate_mindmap(query, relevant_passages, answer, all_data)
-    return html_file, analysis, mindmap_structure
-
+    mindmap_structure, analysis = generate_mindmap(query, relevant_passages, answer, all_data)
+    return mindmap_structure, analysis

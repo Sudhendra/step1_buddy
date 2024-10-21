@@ -292,15 +292,14 @@ def main():
                         st.session_state.query_overview = query_overview
 
                         # Generate Mindmap
-                        mindmap_html, mindmap_analysis, mindmap_structure = get_mindmap_data(
+                        mindmap_structure, mindmap_analysis = get_mindmap_data(
                             st.session_state.user_query,
                             st.session_state.relevant_passages,
                             st.session_state.answer,
                             video_data
                         )
-                        st.session_state.mindmap = mindmap_html
-                        st.session_state.mindmap_analysis = mindmap_analysis
                         st.session_state.mindmap_structure = mindmap_structure
+                        st.session_state.mindmap_analysis = mindmap_analysis
 
                         st.success("Knowledge Graph and Mindmap generated successfully!")
                         logging.info("Knowledge graph and Mindmap generated successfully")
@@ -308,7 +307,7 @@ def main():
                         st.error(f"Error generating knowledge graph and mindmap: {str(e)}")
                         logging.error(f"Error generating knowledge graph and mindmap: {str(e)}", exc_info=True)
 
-        if st.session_state.get('knowledge_graph') and st.session_state.get('mindmap'):
+        if st.session_state.get('knowledge_graph') and st.session_state.get('mindmap_structure'):
             st.markdown("""
                 <style>
                     .stTabs [data-baseweb="tab-panel"] {
@@ -329,7 +328,15 @@ def main():
             st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
             
             st.subheader("Interactive Mindmap")
-            st.components.v1.html(open(st.session_state.mindmap, 'r').read(), height=600, scrolling=True)
+            st.markdown("""
+            <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+            <div id="mindmap"></div>
+            <script>
+            markmap.autoLoader.renderString(`
+            """ + st.session_state.mindmap_structure + """
+            `, document.getElementById('mindmap'));
+            </script>
+            """, unsafe_allow_html=True)
             
             st.subheader("Knowledge Graph Analysis")
             if st.session_state.graph_analysis:
