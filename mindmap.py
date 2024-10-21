@@ -3,7 +3,7 @@ from openai import OpenAI
 import os
 import networkx as nx
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg
+import matplotlib.patches as patches
 import io
 import base64
 
@@ -38,10 +38,12 @@ def generate_mindmap(query, relevant_passages, answer, all_data):
     return mindmap_structure, analysis
 
 def create_mindmap(mindmap_structure):
-    G = nx.Graph()
+    G = nx.DiGraph()
     lines = mindmap_structure.split('\n')
     parent_stack = []
-    
+    node_levels = {}
+    max_level = 0
+
     for line in lines:
         level = line.count('#')
         title = line.strip('#').strip()
@@ -55,31 +57,49 @@ def create_mindmap(mindmap_structure):
         if parent_stack:
             G.add_edge(parent_stack[-1], title)
         else:
-            # If parent_stack is empty, this is a root node
             G.add_node(title)
         
         parent_stack.append(title)
-    
+        node_levels[title] = level
+        max_level = max(max_level, level)
+
     if not G.nodes():
-        # If the graph is empty, add a default node
         G.add_node("No valid mindmap structure")
-    
-    pos = nx.spring_layout(G, k=0.9, iterations=50)
-    
-    plt.figure(figsize=(12, 8))
-    nx.draw(G, pos, with_labels=True, node_color='lightblue', 
-            node_size=3000, font_size=8, font_weight='bold')
-    
-    labels = nx.get_node_attributes(G, 'label')
-    nx.draw_networkx_labels(G, pos, labels, font_size=8)
-    
-    plt.title("Mindmap", fontsize=16)
+        node_levels["No valid mindmap structure"] = 1
+        max_level = 1
+
+    pos = nx.spring_layout(G, k=1, iterations=50)
+
+    plt.figure(figsize=(16, 10))
+    ax = plt.gca()
+
+    # Draw edges
+    nx.draw_networkx_edges(G, pos, edge_color='gray', arrows=True, arrowsize=20)
+
+    # Draw nodes
+    for node, (x, y) in pos.items():
+        level = node_levels[node]
+        color = plt.cm.YlOrRd(1 - (level - 1) / max_level)
+        size = 3000 * (max_level - level + 1) / max_level
+        rect = patches.Rectangle((x - size/10000, y - size/10000), size/5000, size/5000, 
+                                 fill=True, facecolor=color, edgecolor='gray', 
+                                 linewidth=2, alpha=0.7)
+        ax.add_patch(rect)
+        plt.text(x, y, node, ha='center', va='center', wrap=True, 
+                 fontsize=10, fontweight='bold', color='black')
+
+    plt.title("Mindmap", fontsize=20, fontweight='bold')
     plt.axis('off')
-    
+
+    # Adjust the plot to fit all nodes
+    plt.tight_layout()
+    ax.margins(0.2)
+
     img = io.BytesIO()
-    plt.savefig(img, format='png', bbox_inches='tight')
+    plt.savefig(img, format='png', dpi=300, bbox_inches='tight')
     img.seek(0)
-    
+    plt.close()
+
     return base64.b64encode(img.getvalue()).decode()
 
 def get_mindmap_data(query, relevant_passages, answer, all_data):
