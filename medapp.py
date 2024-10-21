@@ -298,11 +298,8 @@ def mindmap_tab_content(video_data):
 
     if st.session_state.get('mindmap_structure'):
         mermaid_code = convert_to_mermaid(st.session_state.mindmap_structure)
-        st.markdown(f"""
-        ```mermaid
-        {mermaid_code}
-        ```
-        """)
+        html = mermaid_to_html(mermaid_code)
+        st.components.v1.html(html, height=600)
 
         st.subheader("Mindmap Analysis")
         if st.session_state.mindmap_analysis:
@@ -343,6 +340,13 @@ def disclosures_tab_content():
     with open("disclosures.txt", "r") as f:
         disclosures_content = f.read()
     st.markdown(disclosures_content)
+
+def mermaid_to_html(mermaid_code):
+    encoded_mermaid = base64.b64encode(mermaid_code.encode('utf-8')).decode('utf-8')
+    html = f'''
+    <iframe width="100%" height="600px" src="https://mermaid.live/edit#base64:{encoded_mermaid}"></iframe>
+    '''
+    return html
 
 if __name__ == "__main__":
     main()
