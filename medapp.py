@@ -178,11 +178,8 @@ def main():
     
     st.title("Step 1 Buddy")
 
-    # if 'knowledge_graph' not in st.session_state:
-    #     st.session_state.knowledge_graph = None
-
-    # Add new tabs for disclosures and knowledge graph
-    tab1, tab2, tab3 = st.tabs(["Main", "Knowledge Graph", "Disclosures"])
+    # Add new tabs for disclosures and mindmap
+    tab1, tab2, tab3 = st.tabs(["Main", "Mindmap", "Disclosures"])
 
     if 'current_tab' not in st.session_state:
         st.session_state.current_tab = "Main"
@@ -190,7 +187,7 @@ def main():
     if tab1:
         st.session_state.current_tab = "Main"
     elif tab2:
-        st.session_state.current_tab = "Knowledge Graph"
+        st.session_state.current_tab = "Mindmap"
     elif tab3:
         st.session_state.current_tab = "Disclosures"
 
@@ -237,8 +234,8 @@ def main():
                     
                     st.write("---")
 
-            # Add a message about the Knowledge Graph
-            st.info("To create a Knowledge Graph for this query, please go to the Knowledge Graph tab.")
+            # Add a message about the Mindmap
+            st.info("To create a Mindmap for this query, please go to the Mindmap tab.")
 
         # Add the feedback button at the end of the main tab
         st.markdown("---")
@@ -266,23 +263,12 @@ def main():
         )
 
     with tab2:
-        st.header("Knowledge Graph and Mindmap")
+        st.header("Interactive Mindmap")
         
         if 'user_query' in st.session_state and 'answer' in st.session_state and 'relevant_passages' in st.session_state:
-            if st.button("Generate Knowledge Graph and Mindmap"):
-                with st.spinner("Generating Knowledge Graph and Mindmap..."):
+            if st.button("Generate Mindmap"):
+                with st.spinner("Generating Mindmap..."):
                     try:
-                        # Generate Knowledge Graph
-                        html_file, graph_analysis, query_overview = generate_knowledge_graph(
-                            st.session_state.user_query, 
-                            st.session_state.relevant_passages, 
-                            st.session_state.answer, 
-                            video_data
-                        )
-                        st.session_state.knowledge_graph = html_file
-                        st.session_state.graph_analysis = graph_analysis
-                        st.session_state.query_overview = query_overview
-
                         # Generate Mindmap
                         mindmap_structure, mindmap_analysis = get_mindmap_data(
                             st.session_state.user_query,
@@ -293,13 +279,13 @@ def main():
                         st.session_state.mindmap_structure = mindmap_structure
                         st.session_state.mindmap_analysis = mindmap_analysis
 
-                        st.success("Knowledge Graph and Mindmap generated successfully!")
-                        logging.info("Knowledge graph and Mindmap generated successfully")
+                        st.success("Mindmap generated successfully!")
+                        logging.info("Mindmap generated successfully")
                     except Exception as e:
-                        st.error(f"Error generating knowledge graph and mindmap: {str(e)}")
-                        logging.error(f"Error generating knowledge graph and mindmap: {str(e)}", exc_info=True)
+                        st.error(f"Error generating mindmap: {str(e)}")
+                        logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
-        if st.session_state.get('knowledge_graph') and st.session_state.get('mindmap_structure'):
+        if st.session_state.get('mindmap_structure'):
             st.markdown("""
                 <style>
                     .stTabs [data-baseweb="tab-panel"] {
@@ -315,14 +301,11 @@ def main():
                     }
                 </style>
             """, unsafe_allow_html=True)
-
-            st.subheader("Interactive Knowledge Graph")
-            st.components.v1.html(open(st.session_state.knowledge_graph, 'r').read(), height=600, scrolling=True)
             
             st.subheader("Interactive Mindmap")
             st.markdown("""
             <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
-            <div id="mindmap"></div>
+            <div id="mindmap" style="height: 600px;"></div>
             <script>
             markmap.autoLoader.renderString(`
             """ + st.session_state.mindmap_structure + """
@@ -330,26 +313,14 @@ def main():
             </script>
             """, unsafe_allow_html=True)
             
-            st.subheader("Knowledge Graph Analysis")
-            if st.session_state.graph_analysis:
-                st.markdown(st.session_state.graph_analysis)
-            else:
-                st.info("No knowledge graph analysis available yet.")
-            
             st.subheader("Mindmap Analysis")
             if st.session_state.mindmap_analysis:
                 st.markdown(st.session_state.mindmap_analysis)
             else:
                 st.info("No mindmap analysis available yet.")
-            
-            st.subheader("Query Overview")
-            if st.session_state.query_overview:
-                st.markdown(st.session_state.query_overview)
-            else:
-                st.info("No query overview available yet.")
 
         else:
-            st.info("Generate a knowledge graph and mindmap by submitting a query in the Main tab.")
+            st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
 
     with tab3:
         st.header("Disclosures")
@@ -361,3 +332,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
