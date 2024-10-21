@@ -181,155 +181,150 @@ def main():
     # Add new tabs for disclosures and mindmap
     tab1, tab2, tab3 = st.tabs(["Main", "Mindmap", "Disclosures"])
 
-    if 'current_tab' not in st.session_state:
-        st.session_state.current_tab = "Main"
-
-    if tab1:
-        st.session_state.current_tab = "Main"
-    elif tab2:
-        st.session_state.current_tab = "Mindmap"
-    elif tab3:
-        st.session_state.current_tab = "Disclosures"
-
-    if st.session_state.current_tab != st.session_state.get('previous_tab'):
-        st.session_state.previous_tab = st.session_state.current_tab
-        st.rerun()
-
     with tab1:
-        topics = ["immunology", "gastroenterology", "cell biology"]
-        selected_topic = st.selectbox("Select a topic", topics, key="topic_selectbox")
-
-        video_data, index, embeddings = load_and_preprocess_data(selected_topic)
-        user_query = st.text_input("Enter your question:", key="user_query_input")
-        submit_button = st.button("Submit", key="submit_button")
-
-        if submit_button and user_query:
-            with st.spinner("Searching for relevant information..."):
-                relevant_passages = retrieve_passages(user_query, index, embeddings, video_data)
-
-            context = " ".join([p["text"] for p in relevant_passages])
-            
-            with st.spinner("Generating answer..."):
-                answer = generate_answer(user_query, context)
-
-            st.subheader("Generated Answer:")
-            st.write(answer)
-
-            # Store values in session state
-            st.session_state.user_query = user_query
-            st.session_state.answer = answer
-            st.session_state.relevant_passages = relevant_passages
-
-            with st.expander("View Relevant Passages"):
-                for passage in relevant_passages:
-                    st.write(f"Video: {passage['video_title']}")
-                    st.write(f"Timestamp: {passage['timestamp']}")
-                    st.write(f"Relevant text: {passage['text']}")
-                    
-                    frame = extract_frame(passage['video_path'], passage['timestamp'])
-                    if frame:
-                        st.image(frame, caption=f"Frame at {passage['timestamp']} seconds")
-                    else:
-                        st.write("Failed to extract frame from video.")
-                    
-                    st.write("---")
-
-            # Add a message about the Mindmap
-            st.info("To create a Mindmap for this query, please go to the Mindmap tab.")
-
-        # Add the feedback button at the end of the main tab
-        st.markdown("---")
-        st.markdown(
-            """
-            <div style="display: flex; justify-content: center; margin-top: 30px;">
-                <a href="https://forms.gle/ht6MH14t8kFqrrni6" target="_blank">
-                    <button style="
-                        font-size: 18px;
-                        padding: 12px 24px;
-                        background-color: #FFB347;
-                        color: white;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                        transition: all 0.3s ease;
-                    ">
-                        ⚕️ Leave Feedback if you liked it! ⚕️
-                    </button>
-                </a>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        main_tab_content()
 
     with tab2:
-        st.header("Interactive Mindmap")
-        
-        if 'user_query' in st.session_state and 'answer' in st.session_state and 'relevant_passages' in st.session_state:
-            if st.button("Generate Mindmap"):
-                with st.spinner("Generating Mindmap..."):
-                    try:
-                        # Generate Mindmap
-                        mindmap_structure, mindmap_analysis = get_mindmap_data(
-                            st.session_state.user_query,
-                            st.session_state.relevant_passages,
-                            st.session_state.answer,
-                            video_data
-                        )
-                        st.session_state.mindmap_structure = mindmap_structure
-                        st.session_state.mindmap_analysis = mindmap_analysis
-
-                        st.success("Mindmap generated successfully!")
-                        logging.info("Mindmap generated successfully")
-                    except Exception as e:
-                        st.error(f"Error generating mindmap: {str(e)}")
-                        logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
-
-        if st.session_state.get('mindmap_structure'):
-            st.markdown("""
-                <style>
-                    .stTabs [data-baseweb="tab-panel"] {
-                        padding-top: 0;
-                    }
-                    .fullWidth {
-                        width: 100%;
-                        padding: 0;
-                        margin: 0;
-                    }
-                    .stMarkdown {
-                        max-width: 100%;
-                    }
-                </style>
-            """, unsafe_allow_html=True)
-            
-            st.subheader("Interactive Mindmap")
-            st.markdown("""
-            <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
-            <div id="mindmap" style="height: 600px;"></div>
-            <script>
-            markmap.autoLoader.renderString(`
-            """ + st.session_state.mindmap_structure + """
-            `, document.getElementById('mindmap'));
-            </script>
-            """, unsafe_allow_html=True)
-            
-            st.subheader("Mindmap Analysis")
-            if st.session_state.mindmap_analysis:
-                st.markdown(st.session_state.mindmap_analysis)
-            else:
-                st.info("No mindmap analysis available yet.")
-
-        else:
-            st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
+        mindmap_tab_content()
 
     with tab3:
-        st.header("Disclosures")
-        with open("disclosures.txt", "r") as f:
-            disclosures_content = f.read()
-        st.markdown(disclosures_content)
+        disclosures_tab_content()
 
     streamlit_analytics.stop_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
 
+def main_tab_content():
+    # Content for the main tab
+    topics = ["immunology", "gastroenterology", "cell biology"]
+    selected_topic = st.selectbox("Select a topic", topics, key="topic_selectbox")
+
+    video_data, index, embeddings = load_and_preprocess_data(selected_topic)
+    user_query = st.text_input("Enter your question:", key="user_query_input")
+    submit_button = st.button("Submit", key="submit_button")
+
+    if submit_button and user_query:
+        with st.spinner("Searching for relevant information..."):
+            relevant_passages = retrieve_passages(user_query, index, embeddings, video_data)
+
+        context = " ".join([p["text"] for p in relevant_passages])
+        
+        with st.spinner("Generating answer..."):
+            answer = generate_answer(user_query, context)
+
+        st.subheader("Generated Answer:")
+        st.write(answer)
+
+        # Store values in session state
+        st.session_state.user_query = user_query
+        st.session_state.answer = answer
+        st.session_state.relevant_passages = relevant_passages
+
+        with st.expander("View Relevant Passages"):
+            for passage in relevant_passages:
+                st.write(f"Video: {passage['video_title']}")
+                st.write(f"Timestamp: {passage['timestamp']}")
+                st.write(f"Relevant text: {passage['text']}")
+                
+                frame = extract_frame(passage['video_path'], passage['timestamp'])
+                if frame:
+                    st.image(frame, caption=f"Frame at {passage['timestamp']} seconds")
+                else:
+                    st.write("Failed to extract frame from video.")
+                
+                st.write("---")
+
+        # Add a message about the Mindmap
+        st.info("To create a Mindmap for this query, please go to the Mindmap tab.")
+
+    # Add the feedback button at the end of the main tab
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style="display: flex; justify-content: center; margin-top: 30px;">
+            <a href="https://forms.gle/ht6MH14t8kFqrrni6" target="_blank">
+                <button style="
+                    font-size: 18px;
+                    padding: 12px 24px;
+                    background-color: #FFB347;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    transition: all 0.3s ease;
+                ">
+                    ⚕️ Leave Feedback if you liked it! ⚕️
+                </button>
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+def mindmap_tab_content():
+    st.header("Interactive Mindmap")
+    
+    if 'user_query' in st.session_state and 'answer' in st.session_state and 'relevant_passages' in st.session_state:
+        if st.button("Generate Mindmap"):
+            with st.spinner("Generating Mindmap..."):
+                try:
+                    # Generate Mindmap
+                    mindmap_structure, mindmap_analysis = get_mindmap_data(
+                        st.session_state.user_query,
+                        st.session_state.relevant_passages,
+                        st.session_state.answer,
+                        video_data
+                    )
+                    st.session_state.mindmap_structure = mindmap_structure
+                    st.session_state.mindmap_analysis = mindmap_analysis
+
+                    st.success("Mindmap generated successfully!")
+                    logging.info("Mindmap generated successfully")
+                except Exception as e:
+                    st.error(f"Error generating mindmap: {str(e)}")
+                    logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
+
+    if st.session_state.get('mindmap_structure'):
+        st.markdown("""
+            <style>
+                .stTabs [data-baseweb="tab-panel"] {
+                    padding-top: 0;
+                }
+                .fullWidth {
+                    width: 100%;
+                    padding: 0;
+                    margin: 0;
+                }
+                .stMarkdown {
+                    max-width: 100%;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+        
+        st.subheader("Interactive Mindmap")
+        st.markdown("""
+        <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+        <div id="mindmap" style="height: 600px;"></div>
+        <script>
+        markmap.autoLoader.renderString(`
+        """ + st.session_state.mindmap_structure + """
+        `, document.getElementById('mindmap'));
+        </script>
+        """, unsafe_allow_html=True)
+        
+        st.subheader("Mindmap Analysis")
+        if st.session_state.mindmap_analysis:
+            st.markdown(st.session_state.mindmap_analysis)
+        else:
+            st.info("No mindmap analysis available yet.")
+
+    else:
+        st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
+
+def disclosures_tab_content():
+    st.header("Disclosures")
+    with open("disclosures.txt", "r") as f:
+        disclosures_content = f.read()
+    st.markdown(disclosures_content)
+
 if __name__ == "__main__":
     main()
-
