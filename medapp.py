@@ -204,7 +204,7 @@ def main():
 
     if st.session_state.current_tab != st.session_state.get('previous_tab'):
         st.session_state.previous_tab = st.session_state.current_tab
-        st.experimental_rerun()
+        st.rerun()
 
     with tab1:
         topics = ["immunology", "gastroenterology", "cell biology"]
