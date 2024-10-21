@@ -32,6 +32,36 @@ if not key:
     st.stop()
 client = OpenAI(api_key=key)
 
+# Initialize Firebase
+firebase_key = os.getenv('FIREBASE_KEY')
+if firebase_key:
+    try:
+        # Decode the base64 encoded key
+        decoded_key = base64.b64decode(firebase_key).decode('utf-8')
+        firebase_key_dict = json.loads(decoded_key)
+        
+        # Ensure the "type" field is present
+        if "type" not in firebase_key_dict:
+            firebase_key_dict["type"] = "service_account"
+        
+        with open('firebase-key.json', 'w') as f:
+            json.dump(firebase_key_dict, f)
+        cred = credentials.Certificate('firebase-key.json')
+        firebase_admin.initialize_app(cred)
+        db = firestore.client()
+        print("Firebase initialized successfully")
+    except Exception as e:
+        print(f"Error initializing Firebase: {str(e)}")
+else:
+    print("FIREBASE_KEY environment variable not found")
+
+# Set Streamlit page config
+st.set_page_config(page_title="Step 1 Buddy", page_icon="⚕️", layout="wide", initial_sidebar_state="expanded")
+st.markdown("""
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true});</script>
+""", unsafe_allow_html=True)
+
 # Check for GPU availability
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -155,32 +185,8 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
         st.error(f"An unexpected error occurred: {str(e)}")
         return None
 
-# Initialize Firebase
-firebase_key = os.getenv('FIREBASE_KEY')
-if firebase_key:
-    try:
-        # Decode the base64 encoded key
-        decoded_key = base64.b64decode(firebase_key).decode('utf-8')
-        firebase_key_dict = json.loads(decoded_key)
-        with open('firebase-key.json', 'w') as f:
-            json.dump(firebase_key_dict, f)
-        cred = credentials.Certificate('firebase-key.json')
-        firebase_admin.initialize_app(cred)
-        db = firestore.client()
-        print("Firebase initialized successfully")
-    except Exception as e:
-        print(f"Error initializing Firebase: {str(e)}")
-else:
-    print("FIREBASE_KEY environment variable not found")
-
 # Main Streamlit app
 def main():
-    st.set_page_config(page_title="Step 1 Buddy", page_icon="⚕️", layout="wide", initial_sidebar_state="expanded")
-    st.markdown("""
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
-    """, unsafe_allow_html=True)
-    
     streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
     
     st.title("Step 1 Buddy")
