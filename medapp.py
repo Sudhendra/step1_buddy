@@ -297,7 +297,7 @@ def mindmap_tab_content(video_data):
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
     if st.session_state.get('mindmap_image'):
-        st.image(st.session_state.mindmap_image, use_column_width=True)
+        st.image(f"data:image/png;base64,{st.session_state.mindmap_image}", use_column_width=True)
 
         st.subheader("Mindmap Analysis")
         if st.session_state.mindmap_analysis:

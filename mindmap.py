@@ -49,14 +49,20 @@ def create_mindmap(mindmap_structure):
         if not title:
             continue
         
-        while len(parent_stack) >= level:
+        while parent_stack and len(parent_stack) >= level:
             parent_stack.pop()
         
         if parent_stack:
             G.add_edge(parent_stack[-1], title)
+        else:
+            # If parent_stack is empty, this is a root node
+            G.add_node(title)
         
         parent_stack.append(title)
-        G.add_node(title)
+    
+    if not G.nodes():
+        # If the graph is empty, add a default node
+        G.add_node("No valid mindmap structure")
     
     pos = nx.spring_layout(G, k=0.9, iterations=50)
     
