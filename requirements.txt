@@ -11,3 +11,4 @@ streamlit-agraph
 firebase-admin
 logging
 matplotlib
+streamlit-agraph

@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt
 from knowledge_graph import generate_knowledge_graph
 from mindmap import get_mindmap_data
 import logging
+from streamlit_agraph import agraph, Node, Edge, Config
 
 # Load environment variables
 load_dotenv()
@@ -284,41 +285,56 @@ def mindmap_tab_content(video_data):
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
     if st.session_state.get('mindmap_structure'):
-        st.markdown("""
-            <style>
-                .stTabs [data-baseweb="tab-panel"] {
-                    padding-top: 0;
-                }
-                .fullWidth {
-                    width: 100%;
-                    padding: 0;
-                    margin: 0;
-                }
-                .stMarkdown {
-                    max-width: 100%;
-                }
-            </style>
-        """, unsafe_allow_html=True)
+        nodes, edges = parse_mindmap_structure(st.session_state.mindmap_structure)
         
-        st.subheader("Interactive Mindmap")
-        st.markdown("""
-        <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
-        <div id="mindmap" style="height: 600px;"></div>
-        <script>
-        markmap.autoLoader.renderString(`
-        """ + st.session_state.mindmap_structure + """
-        `, document.getElementById('mindmap'));
-        </script>
-        """, unsafe_allow_html=True)
-        
+        config = Config(width=750,
+                        height=950,
+                        directed=True,
+                        physics=True,
+                        hierarchical=True,
+                        nodeSpacing=120,
+                        levelSeparation=100)
+
+        return_value = agraph(nodes=nodes, 
+                              edges=edges, 
+                              config=config)
+
         st.subheader("Mindmap Analysis")
         if st.session_state.mindmap_analysis:
             st.markdown(st.session_state.mindmap_analysis)
         else:
             st.info("No mindmap analysis available yet.")
-
     else:
         st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
+
+def parse_mindmap_structure(mindmap_structure):
+    lines = mindmap_structure.split('\n')
+    nodes = []
+    edges = []
+    parent_stack = []
+    
+    for line in lines:
+        level = line.count('#')
+        title = line.strip('#').strip()
+        
+        if not title:
+            continue
+        
+        node_id = f"node_{len(nodes)}"
+        nodes.append(Node(id=node_id, label=title, size=20))
+        
+        if parent_stack:
+            while len(parent_stack) >= level:
+                parent_stack.pop()
+            
+            if parent_stack:
+                parent_id = parent_stack[-1]
+                edges.append(Edge(source=parent_id, target=node_id))
+        
+        if level > len(parent_stack):
+            parent_stack.append(node_id)
+    
+    return nodes, edges
 
 def disclosures_tab_content():
     st.header("Disclosures")
