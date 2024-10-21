@@ -68,35 +68,36 @@ def create_mindmap(mindmap_structure):
         node_levels["No valid mindmap structure"] = 1
         max_level = 1
 
-    pos = nx.spring_layout(G, k=1, iterations=50)
+    # Use a hierarchical layout instead of spring layout
+    pos = nx.spring_layout(G, k=2, iterations=50)  # Increase k for more spacing
 
-    plt.figure(figsize=(16, 10))
+    plt.figure(figsize=(20, 12))  # Increase figure size
     ax = plt.gca()
 
     # Draw edges
-    nx.draw_networkx_edges(G, pos, edge_color='gray', arrows=True, arrowsize=20)
+    nx.draw_networkx_edges(G, pos, edge_color='lightgray', arrows=True, arrowsize=15, width=1, alpha=0.6)
 
     # Draw nodes
     for node, (x, y) in pos.items():
         level = node_levels[node]
         color = plt.cm.YlOrRd(1 - (level - 1) / max_level)
-        size = 3000 * (max_level - level + 1) / max_level
-        rect = patches.Rectangle((x - size/10000, y - size/10000), size/5000, size/5000, 
+        size = 2000 * (max_level - level + 1) / max_level  # Reduce node size
+        rect = patches.Rectangle((x - size/20000, y - size/20000), size/10000, size/10000, 
                                  fill=True, facecolor=color, edgecolor='gray', 
-                                 linewidth=2, alpha=0.7)
+                                 linewidth=1, alpha=0.7)
         ax.add_patch(rect)
         plt.text(x, y, node, ha='center', va='center', wrap=True, 
-                 fontsize=10, fontweight='bold', color='black')
+                 fontsize=8, fontweight='bold', color='black')  # Reduce font size
 
-    plt.title("Mindmap", fontsize=20, fontweight='bold')
+    plt.title("Mindmap", fontsize=24, fontweight='bold', pad=20)
     plt.axis('off')
 
     # Adjust the plot to fit all nodes
     plt.tight_layout()
-    ax.margins(0.2)
+    ax.margins(0.3)  # Increase margins
 
     img = io.BytesIO()
-    plt.savefig(img, format='png', dpi=300, bbox_inches='tight')
+    plt.savefig(img, format='png', dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
     img.seek(0)
     plt.close()
 
