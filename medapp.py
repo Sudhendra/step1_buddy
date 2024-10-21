@@ -177,6 +177,12 @@ else:
 def main():
     streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
     
+    st.set_page_config(page_title="Step 1 Buddy", page_icon="⚕️", layout="wide", initial_sidebar_state="expanded")
+    st.markdown("""
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    """, unsafe_allow_html=True)
+    
     st.title("Step 1 Buddy")
 
     # Add new tabs for disclosures and mindmap
@@ -285,19 +291,12 @@ def mindmap_tab_content(video_data):
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
     if st.session_state.get('mindmap_structure'):
-        nodes, edges = parse_mindmap_structure(st.session_state.mindmap_structure)
-        
-        config = Config(width=750,
-                        height=950,
-                        directed=True,
-                        physics=True,
-                        hierarchical=True,
-                        nodeSpacing=120,
-                        levelSeparation=100)
-
-        return_value = agraph(nodes=nodes, 
-                              edges=edges, 
-                              config=config)
+        mermaid_code = convert_to_mermaid(st.session_state.mindmap_structure)
+        st.markdown(f"""
+        ```mermaid
+        {mermaid_code}
+        ```
+        """)
 
         st.subheader("Mindmap Analysis")
         if st.session_state.mindmap_analysis:
@@ -307,11 +306,10 @@ def mindmap_tab_content(video_data):
     else:
         st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
 
-def parse_mindmap_structure(mindmap_structure):
+def convert_to_mermaid(mindmap_structure):
     lines = mindmap_structure.split('\n')
-    nodes = []
-    edges = []
-    parent_stack = []
+    mermaid_lines = ["mindmap"]
+    current_level = 0
     
     for line in lines:
         level = line.count('#')
@@ -320,20 +318,19 @@ def parse_mindmap_structure(mindmap_structure):
         if not title:
             continue
         
-        node_id = f"node_{len(nodes)}"
-        nodes.append(Node(id=node_id, label=title, size=20))
+        if level > current_level:
+            mermaid_lines.append("  " * (level - 1) + f"{{")
+        elif level < current_level:
+            mermaid_lines.append("  " * (level - 1) + f"}}")
         
-        if parent_stack:
-            while parent_stack and len(parent_stack) >= level:
-                parent_stack.pop()
-            
-            if parent_stack:
-                parent_id = parent_stack[-1]
-                edges.append(Edge(source=parent_id, target=node_id))
-        
-        parent_stack.append(node_id)
+        mermaid_lines.append("  " * level + title)
+        current_level = level
     
-    return nodes, edges
+    while current_level > 0:
+        mermaid_lines.append("  " * (current_level - 1) + f"}}")
+        current_level -= 1
+    
+    return "\n".join(mermaid_lines)
 
 def disclosures_tab_content():
     st.header("Disclosures")
