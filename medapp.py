@@ -281,13 +281,13 @@ def mindmap_tab_content(video_data):
             with st.spinner("Generating Mindmap..."):
                 try:
                     # Generate Mindmap
-                    mindmap_structure, mindmap_analysis = get_mindmap_data(
+                    mindmap_image, mindmap_analysis = get_mindmap_data(
                         st.session_state.user_query,
                         st.session_state.relevant_passages,
                         st.session_state.answer,
                         video_data
                     )
-                    st.session_state.mindmap_structure = mindmap_structure
+                    st.session_state.mindmap_image = mindmap_image
                     st.session_state.mindmap_analysis = mindmap_analysis
 
                     st.success("Mindmap generated successfully!")
@@ -296,10 +296,8 @@ def mindmap_tab_content(video_data):
                     st.error(f"Error generating mindmap: {str(e)}")
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
-    if st.session_state.get('mindmap_structure'):
-        mermaid_code = convert_to_mermaid(st.session_state.mindmap_structure)
-        html = mermaid_to_html(mermaid_code)
-        st.components.v1.html(html, height=600)
+    if st.session_state.get('mindmap_image'):
+        st.image(st.session_state.mindmap_image, use_column_width=True)
 
         st.subheader("Mindmap Analysis")
         if st.session_state.mindmap_analysis:
@@ -308,32 +306,6 @@ def mindmap_tab_content(video_data):
             st.info("No mindmap analysis available yet.")
     else:
         st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
-
-def convert_to_mermaid(mindmap_structure):
-    lines = mindmap_structure.split('\n')
-    mermaid_lines = ["mindmap"]
-    current_level = 0
-    
-    for line in lines:
-        level = line.count('#')
-        title = line.strip('#').strip()
-        
-        if not title:
-            continue
-        
-        if level > current_level:
-            mermaid_lines.append("  " * (level - 1) + f"{{")
-        elif level < current_level:
-            mermaid_lines.append("  " * (level - 1) + f"}}")
-        
-        mermaid_lines.append("  " * level + title)
-        current_level = level
-    
-    while current_level > 0:
-        mermaid_lines.append("  " * (current_level - 1) + f"}}")
-        current_level -= 1
-    
-    return "\n".join(mermaid_lines)
 
 def disclosures_tab_content():
     st.header("Disclosures")

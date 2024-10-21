@@ -10,5 +10,5 @@ python-dotenv
 streamlit-agraph
 firebase-admin
 logging
+networkx
 matplotlib
-streamlit-agraph

@@ -1,6 +1,10 @@
 import json
 from openai import OpenAI
 import os
+import networkx as nx
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+import io
 import base64
 
 def generate_mindmap(query, relevant_passages, answer, all_data):
@@ -33,7 +37,46 @@ def generate_mindmap(query, relevant_passages, answer, all_data):
     
     return mindmap_structure, analysis
 
+def create_mindmap(mindmap_structure):
+    G = nx.Graph()
+    lines = mindmap_structure.split('\n')
+    parent_stack = []
+    
+    for line in lines:
+        level = line.count('#')
+        title = line.strip('#').strip()
+        
+        if not title:
+            continue
+        
+        while len(parent_stack) >= level:
+            parent_stack.pop()
+        
+        if parent_stack:
+            G.add_edge(parent_stack[-1], title)
+        
+        parent_stack.append(title)
+        G.add_node(title)
+    
+    pos = nx.spring_layout(G, k=0.9, iterations=50)
+    
+    plt.figure(figsize=(12, 8))
+    nx.draw(G, pos, with_labels=True, node_color='lightblue', 
+            node_size=3000, font_size=8, font_weight='bold')
+    
+    labels = nx.get_node_attributes(G, 'label')
+    nx.draw_networkx_labels(G, pos, labels, font_size=8)
+    
+    plt.title("Mindmap", fontsize=16)
+    plt.axis('off')
+    
+    img = io.BytesIO()
+    plt.savefig(img, format='png', bbox_inches='tight')
+    img.seek(0)
+    
+    return base64.b64encode(img.getvalue()).decode()
+
 def get_mindmap_data(query, relevant_passages, answer, all_data):
     mindmap_structure, analysis = generate_mindmap(query, relevant_passages, answer, all_data)
-    return mindmap_structure, analysis
-
+    mindmap_image = create_mindmap(mindmap_structure)
+    return mindmap_image, analysis
