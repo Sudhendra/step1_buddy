@@ -285,7 +285,7 @@ def mindmap_tab_content(video_data):
                         st.session_state.user_query,
                         st.session_state.relevant_passages,
                         st.session_state.answer,
-                        video_data
+                        video_data  # Pass the all_data parameter
                     )
                     st.session_state.mindmap_image = mindmap_image
                     st.session_state.mindmap_analysis = mindmap_analysis

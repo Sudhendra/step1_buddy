@@ -7,34 +7,89 @@ import matplotlib.patches as patches
 import io
 import base64
 
+def extract_key_terms(relevant_passages):
+    # Extract key terms from the relevant passages
+    context = " ".join([p['text'] for p in relevant_passages])
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {
+                "role": "system",
+                "content": "Extract key medical terms and concepts from the provided text, focusing on USMLE Step 1 topics."
+            },
+            {
+                "role": "user",
+                "content": f"Text: {context}\n\nList the key terms as a comma-separated list:"
+            }
+        ],
+        max_tokens=150,
+        temperature=0.5,
+    )
+    key_terms = response.choices[0].message.content.strip().split(',')
+    return [term.strip() for term in key_terms if term.strip()]
+
 def generate_mindmap(query, relevant_passages, answer, all_data):
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+    # Extract key terms from relevant passages
+    key_terms = extract_key_terms(relevant_passages)
+
     # Prepare the context for OpenAI
-    context = "\n".join([f"- {p['text']}" for p in relevant_passages])
-    
+    key_terms_text = "\n".join([f"- {term}" for term in key_terms])
+
     # Generate mindmap content using OpenAI
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4",
         messages=[
-            {"role": "system", "content": "Create a detailed mindmap structure based on the given query. Use Markdown format with # for main topics, ## for subtopics, and ### for further details. Ensure comprehensive coverage of the USMLE Step 1 syllabus. Start with the main topic using a single #. Focus on creating a balanced structure with meaningful connections between topics."},
-            {"role": "user", "content": f"Query: {query}\nContext: {context}\nAnswer: {answer}\nCreate a detailed mindmap structure in Markdown format, ensuring a balanced and interconnected structure:"}
-        ]
+            {
+                "role": "system",
+                "content": (
+                    "Create a detailed and accurate mindmap structure based on the given query and key terms. "
+                    "Use Markdown format with # for main topics, ## for subtopics, and ### for further details. "
+                    "Ensure the content is grounded in the provided key terms and aligns with the USMLE Step 1 syllabus."
+                )
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Query: {query}\n\nKey Terms:\n{key_terms_text}\n\n"
+                    f"Answer: {answer}\n\n"
+                    "Create a detailed mindmap structure in Markdown format, ensuring it is comprehensive, informative, and grounded in the key terms:"
+                )
+            }
+        ],
+        max_tokens=800,
+        temperature=0.7,
     )
-    
+
     mindmap_structure = response.choices[0].message.content.strip()
 
     # Generate analysis and summary
     analysis_response = client.chat.completions.create(
-        model="gpt-4o",
+        model="gpt-4",
         messages=[
-            {"role": "system", "content": "Analyze the mindmap and provide a detailed analysis of how the query relates to other topics in the USMLE Step 1 syllabus. Focus on the interconnections between different branches of the mindmap."},
-            {"role": "user", "content": f"Query: {query}\nMindmap structure:\n{mindmap_structure}\nProvide a detailed analysis, highlighting the connections between topics:"}
-        ]
+            {
+                "role": "system",
+                "content": (
+                    "Provide a detailed analysis of how the query relates to the key terms and other topics in the USMLE Step 1 syllabus. "
+                    "Focus on the interconnections and ensure the analysis is accurate and informative."
+                )
+            },
+            {
+                "role": "user",
+                "content": (
+                    f"Query: {query}\n\nMindmap Structure:\n{mindmap_structure}\n\n"
+                    "Provide a detailed analysis highlighting the connections between topics, ensuring minimal fluff and maximum informational value:"
+                )
+            }
+        ],
+        max_tokens=800,
+        temperature=0.7,
     )
-    
+
     analysis = analysis_response.choices[0].message.content.strip()
-    
+
     return mindmap_structure, analysis
 
 def create_mindmap(mindmap_structure):
