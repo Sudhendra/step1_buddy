@@ -40,7 +40,7 @@ def generate_mindmap(query, relevant_passages, answer, all_data):
 
     # Generate mindmap content using OpenAI
     response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
@@ -67,7 +67,7 @@ def generate_mindmap(query, relevant_passages, answer, all_data):
 
     # Generate analysis and summary
     analysis_response = client.chat.completions.create(
-        model="gpt-4",
+        model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
