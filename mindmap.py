@@ -13,7 +13,7 @@ def extract_key_terms(relevant_passages):
     context = " ".join([p['text'] for p in relevant_passages])
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4",
         messages=[
             {
                 "role": "system",
@@ -184,68 +184,6 @@ def create_mindmap(mindmap_structure):
     return content
 
 def get_mindmap_data(query, relevant_passages, answer, all_data):
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-    # Extract key terms from relevant passages
-    key_terms = extract_key_terms(relevant_passages)
-
-    # Prepare the context for OpenAI
-    key_terms_text = "\n".join([f"- {term}" for term in key_terms])
-
-    # Generate mindmap content using OpenAI
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "Create a detailed and accurate mindmap structure based on the given query and key terms. "
-                        "The output should be a JSON array of objects, where each object represents a node in the mindmap. "
-                        "Each node should have the following properties: "
-                        "id (integer), label (string), group (integer), and optionally parent (integer). "
-                        "The main topic (query) should have id 1 and no parent. "
-                        "Subtopics should have increasing ids and reference their parent's id. "
-                        "Use group 1 for the main topic, group 2 for primary subtopics, and group 3 for secondary subtopics. "
-                        "Ensure the content is grounded in the provided key terms and aligns with the USMLE Step 1 syllabus."
-                    )
-                },
-                {
-                    "role": "user",
-                    "content": (
-                        f"Query: {query}\n\nKey Terms:\n{key_terms_text}\n\n"
-                        f"Answer: {answer}\n\n"
-                        "Create a detailed mindmap structure in the specified JSON format, ensuring it is comprehensive, informative, and grounded in the key terms:"
-                    )
-                }
-            ],
-            max_tokens=1000,
-            temperature=0.2,
-        )
-
-        mindmap_data = json.loads(response.choices[0].message.content.strip())
-        
-        # Validate the structure of mindmap_data
-        if not isinstance(mindmap_data, list):
-            raise ValueError("Mindmap data is not a list")
-        
-        for node in mindmap_data:
-            if not all(key in node for key in ['id', 'label', 'group']):
-                raise ValueError("Mindmap node is missing required keys")
-
-    except json.JSONDecodeError:
-        print("Error: Invalid JSON response from OpenAI")
-        mindmap_data = generate_fallback_mindmap(query, key_terms)
-    except Exception as e:
-        print(f"Error generating mindmap: {str(e)}")
-        mindmap_data = generate_fallback_mindmap(query, key_terms)
-
-    return mindmap_data
-
-def generate_fallback_mindmap(query, key_terms):
-    fallback_data = [
-        {"id": 1, "label": query, "group": 1}
-    ]
-    for i, term in enumerate(key_terms[:5], start=2):
-        fallback_data.append({"id": i, "label": term, "group": 2, "parent": 1})
-    return fallback_data
+    mindmap_structure, analysis = generate_mindmap(query, relevant_passages, answer, all_data)
+    mindmap_html = create_mindmap(mindmap_structure)
+    return mindmap_html, analysis
