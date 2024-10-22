@@ -28,13 +28,13 @@ def generate_mindmap(query: str) -> str:
 
 def generate_analysis(mindmap_content: str, topic_data: list) -> str:
     # Extract relevant information from topic_data
-    relevant_info = "\n".join([item['text'] for item in topic_data[:10]])  # Use first 10 items as context
+    relevant_info = "\n".join([f"[{item['video_title']}] {item['text']}" for item in topic_data[:10]])  # Use first 10 items as context
     
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a medical expert specializing in USMLE Step 1 content. Provide a critical analysis report based on the given mindmap and additional context, expanding upon the topics to help USMLE Step 1 students understand this topic immediately. Use the additional context to enrich your analysis with specific details and examples."},
+                {"role": "system", "content": "You are a medical expert specializing in USMLE Step 1 content. Provide a critical analysis report based on the given mindmap and additional context, expanding upon the topics to help USMLE Step 1 students understand this topic immediately. Use the additional context to enrich your analysis with specific details and examples. Include references to the video titles in your analysis using square brackets, e.g., [Video Title]."},
                 {"role": "user", "content": f"Based on the following mindmap and additional context, provide a critical analysis report for USMLE Step 1 students:\n\nMindmap:\n{mindmap_content}\n\nAdditional Context:\n{relevant_info}"}
             ],
             max_tokens=1500,
