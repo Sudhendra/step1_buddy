@@ -288,7 +288,7 @@ def mindmap_tab_content(video_data):
                         st.session_state.answer
                     )
                     st.session_state.mindmap_markdown = mindmap_markdown
-                    print(mindmap_markdown)
+                    logging.info(mindmap_markdown)
 
                     st.success("Mindmap generated successfully!")
                     logging.info("Mindmap generated successfully")
