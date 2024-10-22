@@ -1,6 +1,5 @@
 import streamlit as st
 import streamlit_analytics
-import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import torch
@@ -16,12 +15,6 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
 import base64
-import matplotlib.pyplot as plt
-from mindmap import get_mindmap_data
-import logging
-from streamlit_agraph import agraph, Node, Edge, Config
-import networkx as nx
-from pyvis.network import Network
 
 # Load environment variables
 load_dotenv()
@@ -66,13 +59,6 @@ st.markdown("""
 # Check for GPU availability
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
-
-if 'knowledge_graph' not in st.session_state:
-    st.session_state.knowledge_graph = None
-if 'graph_analysis' not in st.session_state:
-    st.session_state.graph_analysis = None
-if 'query_overview' not in st.session_state:
-    st.session_state.query_overview = None
 
 # Load SentenceTransformer model
 @st.cache_resource
@@ -131,13 +117,13 @@ def generate_answer(query: str, context: str) -> str:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that answers medical questions based on the provided context. Always ground your answers in the given context and be concise."},
+                {"role": "system", "content": "You are a helpful assistant that answers USMLE Step 1 questions based on the provided context. Always ground your answers in the given context and be concise."},
                 {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"}
             ],
             max_tokens=150,
             n=1,
             stop=None,
-            temperature=0.7,
+            temperature=0.2,
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
@@ -201,9 +187,6 @@ def main():
 
     with tab1:
         main_tab_content(video_data, index, embeddings)
-
-    with tab2:
-        mindmap_tab_content(video_data)
 
     with tab3:
         disclosures_tab_content()
@@ -274,45 +257,11 @@ def main_tab_content(video_data, index, embeddings):
         unsafe_allow_html=True
     )
 
-def mindmap_tab_content(video_data):
-    st.header("Interactive Mindmap")
-    
-    if 'user_query' in st.session_state and 'answer' in st.session_state and 'relevant_passages' in st.session_state:
-        if st.button("Generate Mindmap"):
-            with st.spinner("Generating Mindmap..."):
-                try:
-                    # Generate Mindmap
-                    mindmap_markdown = get_mindmap_data(
-                        st.session_state.user_query,
-                        st.session_state.relevant_passages,
-                        st.session_state.answer
-                    )
-                    st.session_state.mindmap_markdown = mindmap_markdown
-                    logging.info(mindmap_markdown)
-
-                    st.success("Mindmap generated successfully!")
-                    logging.info("Mindmap generated successfully")
-                except Exception as e:
-                    st.error(f"Error generating mindmap: {str(e)}")
-                    logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
-
-    if st.session_state.get('mindmap_markdown'):
-        st.markdown(st.session_state.mindmap_markdown)
-    else:
-        st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
-
 def disclosures_tab_content():
     st.header("Disclosures")
     with open("disclosures.txt", "r") as f:
         disclosures_content = f.read()
     st.markdown(disclosures_content)
-
-def mermaid_to_html(mermaid_code):
-    encoded_mermaid = base64.b64encode(mermaid_code.encode('utf-8')).decode('utf-8')
-    html = f'''
-    <iframe width="100%" height="600px" src="https://mermaid.live/edit#base64:{encoded_mermaid}"></iframe>
-    '''
-    return html
 
 if __name__ == "__main__":
     main()
