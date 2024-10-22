@@ -219,7 +219,7 @@ def get_mindmap_data(query, relevant_passages, answer, all_data):
             }
         ],
         max_tokens=1000,
-        temperature=0.7,
+        temperature=0.2,
     )
 
     mindmap_data = json.loads(response.choices[0].message.content.strip())
