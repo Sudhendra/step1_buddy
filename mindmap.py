@@ -123,33 +123,33 @@ def create_mindmap(mindmap_structure):
         node_levels["No valid mindmap structure"] = 1
         max_level = 1
 
-    # Use a hierarchical layout instead of spring layout
-    pos = nx.spring_layout(G, k=2, iterations=50)  # Increase k for more spacing
+    # Use a hierarchical layout
+    pos = nx.spring_layout(G, k=0.5, iterations=50)
 
-    plt.figure(figsize=(20, 12))  # Increase figure size
+    plt.figure(figsize=(20, 12))
     ax = plt.gca()
 
     # Draw edges
-    nx.draw_networkx_edges(G, pos, edge_color='lightgray', arrows=True, arrowsize=15, width=1, alpha=0.6)
+    nx.draw_networkx_edges(G, pos, edge_color='lightgray', arrows=True, arrowsize=10, width=1, alpha=0.6)
 
     # Draw nodes
     for node, (x, y) in pos.items():
         level = node_levels[node]
         color = plt.cm.YlOrRd(1 - (level - 1) / max_level)
-        size = 2000 * (max_level - level + 1) / max_level  # Reduce node size
-        rect = patches.Rectangle((x - size/20000, y - size/20000), size/10000, size/10000, 
+        size = 3000 * (max_level - level + 1) / max_level
+        rect = patches.Rectangle((x - size/30000, y - size/30000), size/15000, size/15000, 
                                  fill=True, facecolor=color, edgecolor='gray', 
                                  linewidth=1, alpha=0.7)
         ax.add_patch(rect)
         plt.text(x, y, node, ha='center', va='center', wrap=True, 
-                 fontsize=8, fontweight='bold', color='black')  # Reduce font size
+                 fontsize=8, fontweight='bold', color='black')
 
     plt.title("Mindmap", fontsize=24, fontweight='bold', pad=20)
     plt.axis('off')
 
     # Adjust the plot to fit all nodes
     plt.tight_layout()
-    ax.margins(0.3)  # Increase margins
+    ax.margins(0.2)
 
     img = io.BytesIO()
     plt.savefig(img, format='png', dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
