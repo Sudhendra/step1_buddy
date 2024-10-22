@@ -2,6 +2,7 @@ import streamlit as st
 from openai import OpenAI
 import os
 import time
+from streamlit_markmap import markmap
 
 # Set up OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -11,7 +12,7 @@ def generate_mindmap(query: str) -> str:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a medical expert specializing in USMLE Step 1 content. Create a detailed mindmap in markdown format for the given query, focusing on USMLE Step 1 concepts and their interconnections."},
+                {"role": "system", "content": "You are a medical expert specializing in USMLE Step 1 content. Create a detailed mindmap in markdown format for the given query, focusing on USMLE Step 1 concepts and their interconnections. Use only '#', '##', '###', etc. for hierarchy."},
                 {"role": "user", "content": f"Create a detailed mindmap for the following USMLE Step 1 related query: {query}"}
             ],
             max_tokens=1000,
@@ -22,10 +23,16 @@ def generate_mindmap(query: str) -> str:
         return response.choices[0].message.content.strip()
     except Exception as e:
         st.error(f"Error generating mindmap: {str(e)}")
-        return "Sorry, I couldn't generate a mindmap at this time."
+        return "# Error\n## Sorry, I couldn't generate a mindmap at this time."
 
 def display_mindmap(mindmap_content: str):
+    # Display the raw markdown content
+    st.subheader("Markdown Content:")
     st.code(mindmap_content, language="markdown")
+    
+    # Display the mindmap using markmap
+    st.subheader("Interactive Mindmap:")
+    markmap(mindmap_content)
 
 def mindmap_tab_content():
     st.header("Mindmap")

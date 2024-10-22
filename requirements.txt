@@ -9,3 +9,4 @@ streamlit_analytics
 python-dotenv
 firebase-admin
 logging
+streamlit-markmap
