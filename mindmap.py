@@ -72,13 +72,16 @@ def mindmap_tab_content():
             time.sleep(0.05)
         
         # Display the generated mindmap
-        display_mindmap(mindmap)
+        with st.expander("View Mindmap"):
+            display_mindmap(mindmap)
         
         # Generate and display the analysis
         st.subheader("Analysis")
         with st.spinner("Generating analysis..."):
             analysis = generate_analysis(mindmap)
-        st.markdown(analysis)
+            
+        with st.expander("View Analysis"):
+            st.markdown(analysis)
         
         # Remove the progress bar
         progress_bar.empty()
