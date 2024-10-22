@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
 import base64
+from mindmap import mindmap_tab_content
 
 # Load environment variables
 load_dotenv()
@@ -187,6 +188,9 @@ def main():
 
     with tab1:
         main_tab_content(video_data, index, embeddings)
+
+    with tab2:
+        mindmap_tab_content()
 
     with tab3:
         disclosures_tab_content()
