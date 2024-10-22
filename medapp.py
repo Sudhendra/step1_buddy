@@ -282,14 +282,12 @@ def mindmap_tab_content(video_data):
             with st.spinner("Generating Mindmap..."):
                 try:
                     # Generate Mindmap
-                    mindmap_html, mindmap_analysis = get_mindmap_data(
+                    mindmap_markdown = get_mindmap_data(
                         st.session_state.user_query,
                         st.session_state.relevant_passages,
-                        st.session_state.answer,
-                        video_data
+                        st.session_state.answer
                     )
-                    st.session_state.mindmap_html = mindmap_html
-                    st.session_state.mindmap_analysis = mindmap_analysis
+                    st.session_state.mindmap_markdown = mindmap_markdown
 
                     st.success("Mindmap generated successfully!")
                     logging.info("Mindmap generated successfully")
@@ -297,14 +295,8 @@ def mindmap_tab_content(video_data):
                     st.error(f"Error generating mindmap: {str(e)}")
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
-    if st.session_state.get('mindmap_html'):
-        st.components.v1.html(st.session_state.mindmap_html, height=600)
-
-        st.subheader("Mindmap Analysis")
-        if st.session_state.mindmap_analysis:
-            st.markdown(st.session_state.mindmap_analysis)
-        else:
-            st.info("No mindmap analysis available yet.")
+    if st.session_state.get('mindmap_markdown'):
+        st.markdown(st.session_state.mindmap_markdown)
     else:
         st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
 
@@ -323,4 +315,3 @@ def mermaid_to_html(mermaid_code):
 
 if __name__ == "__main__":
     main()
-

@@ -9,7 +9,6 @@ import base64
 from pyvis.network import Network
 
 def extract_key_terms(relevant_passages):
-    # Extract key terms from the relevant passages
     context = " ".join([p['text'] for p in relevant_passages])
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     response = client.chat.completions.create(
@@ -30,34 +29,21 @@ def extract_key_terms(relevant_passages):
     key_terms = response.choices[0].message.content.strip().split(',')
     return [term.strip() for term in key_terms if term.strip()]
 
-def generate_mindmap(query, relevant_passages, answer, all_data):
+def generate_mindmap(query, relevant_passages, answer):
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-    # Extract key terms from relevant passages
     key_terms = extract_key_terms(relevant_passages)
-
-    # Prepare the context for OpenAI
     key_terms_text = "\n".join([f"- {term}" for term in key_terms])
 
-    # Generate mindmap content using OpenAI
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4",
         messages=[
             {
                 "role": "system",
-                "content": (
-                    "Create a detailed and accurate mindmap structure based on the given query and key terms. "
-                    "Use Markdown format with # for main topics, ## for subtopics, and ### for further details. "
-                    "Ensure the content is grounded in the provided key terms and aligns with the USMLE Step 1 syllabus."
-                )
+                "content": "Create a detailed and accurate mindmap structure based on the given query and key terms. Use Markdown format with # for main topics, ## for subtopics, and ### for further details."
             },
             {
                 "role": "user",
-                "content": (
-                    f"Query: {query}\n\nKey Terms:\n{key_terms_text}\n\n"
-                    f"Answer: {answer}\n\n"
-                    "Create a detailed mindmap structure in Markdown format, ensuring it is comprehensive, informative, and grounded in the key terms:"
-                )
+                "content": f"Query: {query}\n\nKey Terms:\n{key_terms_text}\n\nAnswer: {answer}\n\nCreate a detailed mindmap structure in Markdown format:"
             }
         ],
         max_tokens=800,
@@ -65,33 +51,7 @@ def generate_mindmap(query, relevant_passages, answer, all_data):
     )
 
     mindmap_structure = response.choices[0].message.content.strip()
-
-    # Generate analysis and summary
-    analysis_response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system",
-                "content": (
-                    "Provide a detailed analysis of how the query relates to the key terms and other topics in the USMLE Step 1 syllabus. "
-                    "Focus on the interconnections and ensure the analysis is accurate and informative."
-                )
-            },
-            {
-                "role": "user",
-                "content": (
-                    f"Query: {query}\n\nMindmap Structure:\n{mindmap_structure}\n\n"
-                    "Provide a detailed analysis highlighting the connections between topics, ensuring minimal fluff and maximum informational value:"
-                )
-            }
-        ],
-        max_tokens=800,
-        temperature=0.7,
-    )
-
-    analysis = analysis_response.choices[0].message.content.strip()
-
-    return mindmap_structure, analysis
+    return mindmap_structure
 
 def create_mindmap(mindmap_structure):
     G = nx.DiGraph()
@@ -183,7 +143,6 @@ def create_mindmap(mindmap_structure):
     
     return content
 
-def get_mindmap_data(query, relevant_passages, answer, all_data):
-    mindmap_structure, analysis = generate_mindmap(query, relevant_passages, answer, all_data)
-    mindmap_html = create_mindmap(mindmap_structure)
-    return mindmap_html, analysis
+def get_mindmap_data(query, relevant_passages, answer):
+    mindmap_structure = generate_mindmap(query, relevant_passages, answer)
+    return mindmap_structure
