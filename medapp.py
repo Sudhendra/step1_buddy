@@ -17,7 +17,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import base64
 import matplotlib.pyplot as plt
-from knowledge_graph import generate_knowledge_graph
 from mindmap import get_mindmap_data
 import logging
 from streamlit_agraph import agraph, Node, Edge, Config
