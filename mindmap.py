@@ -3,6 +3,7 @@ from openai import OpenAI
 import os
 import time
 from streamlit_markmap import markmap
+import json
 
 # Set up OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -25,13 +26,16 @@ def generate_mindmap(query: str) -> str:
         st.error(f"Error generating mindmap: {str(e)}")
         return "# Error\n## Sorry, I couldn't generate a mindmap at this time."
 
-def generate_analysis(mindmap_content: str) -> str:
+def generate_analysis(mindmap_content: str, topic_data: list) -> str:
+    # Extract relevant information from topic_data
+    relevant_info = "\n".join([item['text'] for item in topic_data[:10]])  # Use first 10 items as context
+    
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": "You are a medical expert specializing in USMLE Step 1 content. Provide a critical analysis report based on the given mindmap, expanding upon the topics to help USMLE Step 1 students understand this topic immediately."},
-                {"role": "user", "content": f"Based on the following mindmap, provide a critical analysis report for USMLE Step 1 students:\n\n{mindmap_content}"}
+                {"role": "system", "content": "You are a medical expert specializing in USMLE Step 1 content. Provide a critical analysis report based on the given mindmap and additional context, expanding upon the topics to help USMLE Step 1 students understand this topic immediately. Use the additional context to enrich your analysis with specific details and examples."},
+                {"role": "user", "content": f"Based on the following mindmap and additional context, provide a critical analysis report for USMLE Step 1 students:\n\nMindmap:\n{mindmap_content}\n\nAdditional Context:\n{relevant_info}"}
             ],
             max_tokens=1500,
             n=1,
@@ -44,13 +48,14 @@ def generate_analysis(mindmap_content: str) -> str:
         return "Sorry, I couldn't generate an analysis at this time."
 
 def display_mindmap(mindmap_content: str):
-    # Display the raw markdown content
-    # st.subheader("Markdown Content:")
-    # st.code(mindmap_content, language="markdown")
-    
     # Display the mindmap using markmap
     st.subheader("Interactive Mindmap:")
     markmap(mindmap_content)
+
+def load_topic_data(topic: str) -> list:
+    file_path = os.path.join('data', f'{topic.lower()}_videos.json')
+    with open(file_path, 'r') as f:
+        return json.load(f)
 
 def mindmap_tab_content():
     st.header("Mindmap")
@@ -75,10 +80,14 @@ def mindmap_tab_content():
         with st.expander("View Mindmap"):
             display_mindmap(mindmap)
         
+        # Load topic data
+        topic = st.session_state.get('topic_selectbox', 'immunology')  # Default to 'immunology' if not set
+        topic_data = load_topic_data(topic)
+        
         # Generate and display the analysis
         st.subheader("Analysis")
         with st.spinner("Generating analysis..."):
-            analysis = generate_analysis(mindmap)
+            analysis = generate_analysis(mindmap, topic_data)
             
         with st.expander("View Analysis"):
             st.markdown(analysis)
