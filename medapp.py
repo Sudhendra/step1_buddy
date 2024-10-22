@@ -219,7 +219,7 @@ def main_tab_content(video_data, index, embeddings):
         st.session_state.answer = answer
         st.session_state.relevant_passages = relevant_passages
 
-        with st.expander("View Relevant Passages"):
+        with st.expander("View Relevant Passages", expanded=True):
             for passage in relevant_passages:
                 st.write(f"Video: {passage['video_title']}")
                 st.write(f"Timestamp: {passage['timestamp']}")
