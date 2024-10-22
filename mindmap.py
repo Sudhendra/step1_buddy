@@ -25,7 +25,7 @@ def generate_mindmap(query: str) -> str:
         return "Sorry, I couldn't generate a mindmap at this time."
 
 def display_mindmap(mindmap_content: str):
-    st.info(mindmap_content)
+    st.code(mindmap_content, language="markdown")
 
 def mindmap_tab_content():
     st.header("Mindmap")
