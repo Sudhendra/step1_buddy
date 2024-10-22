@@ -45,8 +45,8 @@ def generate_analysis(mindmap_content: str) -> str:
 
 def display_mindmap(mindmap_content: str):
     # Display the raw markdown content
-    st.subheader("Markdown Content:")
-    st.code(mindmap_content, language="markdown")
+    # st.subheader("Markdown Content:")
+    # st.code(mindmap_content, language="markdown")
     
     # Display the mindmap using markmap
     st.subheader("Interactive Mindmap:")
