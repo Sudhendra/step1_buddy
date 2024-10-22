@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import io
 import base64
+from pyvis.network import Network
 
 def extract_key_terms(relevant_passages):
     # Extract key terms from the relevant passages
@@ -123,42 +124,66 @@ def create_mindmap(mindmap_structure):
         node_levels["No valid mindmap structure"] = 1
         max_level = 1
 
-    # Use a hierarchical layout
-    pos = nx.spring_layout(G, k=0.5, iterations=50)
+    net = Network(height="600px", width="100%", bgcolor="#FFFFFF", font_color="black")
+    net.from_nx(G)
 
-    plt.figure(figsize=(20, 12))
-    ax = plt.gca()
+    for node in net.nodes:
+        level = node_levels[node['id']]
+        size = 30 * (max_level - level + 1)
+        color = f"rgb({255 - 30*level}, {100 + 30*level}, 255)"
+        node.update({'size': size, 'color': color})
 
-    # Draw edges
-    nx.draw_networkx_edges(G, pos, edge_color='lightgray', arrows=True, arrowsize=10, width=1, alpha=0.6)
+    net.set_options("""
+    var options = {
+      "nodes": {
+        "shape": "dot",
+        "font": {
+          "size": 16,
+          "face": "Tahoma"
+        }
+      },
+      "edges": {
+        "color": {
+          "color": "#888888",
+          "highlight": "#000000"
+        },
+        "smooth": {
+          "type": "cubicBezier",
+          "forceDirection": "horizontal"
+        }
+      },
+      "layout": {
+        "hierarchical": {
+          "enabled": true,
+          "levelSeparation": 150,
+          "nodeSpacing": 100,
+          "treeSpacing": 200,
+          "direction": "LR"
+        }
+      },
+      "physics": {
+        "hierarchicalRepulsion": {
+          "centralGravity": 0.0,
+          "springLength": 100,
+          "springConstant": 0.01,
+          "nodeDistance": 120,
+          "damping": 0.09
+        },
+        "minVelocity": 0.75,
+        "solver": "hierarchicalRepulsion"
+      }
+    }
+    """)
 
-    # Draw nodes
-    for node, (x, y) in pos.items():
-        level = node_levels[node]
-        color = plt.cm.YlOrRd(1 - (level - 1) / max_level)
-        size = 3000 * (max_level - level + 1) / max_level
-        rect = patches.Rectangle((x - size/30000, y - size/30000), size/15000, size/15000, 
-                                 fill=True, facecolor=color, edgecolor='gray', 
-                                 linewidth=1, alpha=0.7)
-        ax.add_patch(rect)
-        plt.text(x, y, node, ha='center', va='center', wrap=True, 
-                 fontsize=8, fontweight='bold', color='black')
-
-    plt.title("Mindmap", fontsize=24, fontweight='bold', pad=20)
-    plt.axis('off')
-
-    # Adjust the plot to fit all nodes
-    plt.tight_layout()
-    ax.margins(0.2)
-
-    img = io.BytesIO()
-    plt.savefig(img, format='png', dpi=300, bbox_inches='tight', facecolor='white', edgecolor='none')
-    img.seek(0)
-    plt.close()
-
-    return base64.b64encode(img.getvalue()).decode()
+    html_file = "mindmap.html"
+    net.save_graph(html_file)
+    
+    with open(html_file, "r", encoding="utf-8") as f:
+        content = f.read()
+    
+    return content
 
 def get_mindmap_data(query, relevant_passages, answer, all_data):
     mindmap_structure, analysis = generate_mindmap(query, relevant_passages, answer, all_data)
-    mindmap_image = create_mindmap(mindmap_structure)
-    return mindmap_image, analysis
+    mindmap_html = create_mindmap(mindmap_structure)
+    return mindmap_html, analysis

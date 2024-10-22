@@ -21,6 +21,8 @@ from knowledge_graph import generate_knowledge_graph
 from mindmap import get_mindmap_data
 import logging
 from streamlit_agraph import agraph, Node, Edge, Config
+import networkx as nx
+from pyvis.network import Network
 
 # Load environment variables
 load_dotenv()
@@ -281,13 +283,13 @@ def mindmap_tab_content(video_data):
             with st.spinner("Generating Mindmap..."):
                 try:
                     # Generate Mindmap
-                    mindmap_image, mindmap_analysis = get_mindmap_data(
+                    mindmap_html, mindmap_analysis = get_mindmap_data(
                         st.session_state.user_query,
                         st.session_state.relevant_passages,
                         st.session_state.answer,
-                        video_data  # Pass the all_data parameter
+                        video_data
                     )
-                    st.session_state.mindmap_image = mindmap_image
+                    st.session_state.mindmap_html = mindmap_html
                     st.session_state.mindmap_analysis = mindmap_analysis
 
                     st.success("Mindmap generated successfully!")
@@ -296,8 +298,8 @@ def mindmap_tab_content(video_data):
                     st.error(f"Error generating mindmap: {str(e)}")
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
 
-    if st.session_state.get('mindmap_image'):
-        st.image(f"data:image/png;base64,{st.session_state.mindmap_image}", use_column_width=True)
+    if st.session_state.get('mindmap_html'):
+        st.components.v1.html(st.session_state.mindmap_html, height=600)
 
         st.subheader("Mindmap Analysis")
         if st.session_state.mindmap_analysis:
@@ -322,3 +324,4 @@ def mermaid_to_html(mermaid_code):
 
 if __name__ == "__main__":
     main()
+

@@ -12,3 +12,4 @@ firebase-admin
 logging
 networkx
 matplotlib
+pyvis
