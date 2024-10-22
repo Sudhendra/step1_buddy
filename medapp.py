@@ -282,31 +282,89 @@ def mindmap_tab_content(video_data):
             with st.spinner("Generating Mindmap..."):
                 try:
                     # Generate Mindmap
-                    mindmap_html, mindmap_analysis = get_mindmap_data(
+                    mindmap_data = get_mindmap_data(
                         st.session_state.user_query,
                         st.session_state.relevant_passages,
                         st.session_state.answer,
                         video_data
                     )
-                    st.session_state.mindmap_html = mindmap_html
-                    st.session_state.mindmap_analysis = mindmap_analysis
+                    st.session_state.mindmap_data = mindmap_data
+
+                    # Create and display the network graph
+                    network_html = create_network_graph(mindmap_data)
+                    st.components.v1.html(network_html, height=600)
 
                     st.success("Mindmap generated successfully!")
                     logging.info("Mindmap generated successfully")
                 except Exception as e:
                     st.error(f"Error generating mindmap: {str(e)}")
                     logging.error(f"Error generating mindmap: {str(e)}", exc_info=True)
-
-    if st.session_state.get('mindmap_html'):
-        st.components.v1.html(st.session_state.mindmap_html, height=600)
-
-        st.subheader("Mindmap Analysis")
-        if st.session_state.mindmap_analysis:
-            st.markdown(st.session_state.mindmap_analysis)
-        else:
-            st.info("No mindmap analysis available yet.")
     else:
         st.info("Generate a mindmap by submitting a query in the Main tab and then clicking the 'Generate Mindmap' button above.")
+
+def create_network_graph(mindmap_data):
+    G = nx.Graph()
+    
+    # Add nodes and edges based on mindmap_data
+    for item in mindmap_data:
+        G.add_node(item['id'], label=item['label'], group=item['group'])
+        if 'parent' in item:
+            G.add_edge(item['parent'], item['id'])
+    
+    # Create a Pyvis network
+    net = Network(height="600px", width="100%", bgcolor="#222222", font_color="white")
+    
+    # Add nodes to the network
+    for node in G.nodes(data=True):
+        net.add_node(node[0], label=node[1]['label'], title=node[1]['label'], group=node[1]['group'])
+    
+    # Add edges to the network
+    for edge in G.edges():
+        net.add_edge(edge[0], edge[1])
+    
+    # Set options for the network
+    net.set_options("""
+    var options = {
+        "nodes": {
+            "font": {
+                "size": 20
+            },
+            "borderWidth": 2,
+            "borderWidthSelected": 4,
+            "color": {
+                "border": "#ffffff",
+                "background": "#666666"
+            },
+            "shape": "dot",
+            "size": 30
+        },
+        "edges": {
+            "color": {
+                "color": "#ffffff",
+                "highlight": "#3498db"
+            },
+            "width": 2,
+            "smooth": {
+                "type": "continuous"
+            }
+        },
+        "physics": {
+            "forceAtlas2Based": {
+                "gravitationalConstant": -100,
+                "centralGravity": 0.015,
+                "springLength": 150,
+                "springConstant": 0.08
+            },
+            "maxVelocity": 50,
+            "solver": "forceAtlas2Based",
+            "timestep": 0.35,
+            "stabilization": {"iterations": 150}
+        }
+    }
+    """)
+    
+    # Generate the HTML for the network
+    return net.generate_html()
 
 def disclosures_tab_content():
     st.header("Disclosures")
@@ -323,4 +381,3 @@ def mermaid_to_html(mermaid_code):
 
 if __name__ == "__main__":
     main()
-
