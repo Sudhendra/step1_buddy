@@ -95,3 +95,10 @@ def mindmap_tab_content():
         progress_bar.empty()
     else:
         st.write("Please enter a query in the Main tab to generate a mindmap.")
+
+    # Add this at the end of the mindmap_tab_content function
+    st.markdown("<br><br>", unsafe_allow_html=True)  # Add some space
+    st.markdown(
+        "<p style='text-align: center; color: grey;'>Made with ❤️ for 🐼</p>", 
+        unsafe_allow_html=True
+    )
