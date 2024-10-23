@@ -106,4 +106,4 @@ def mindmap_tab_content():
         st.write("Please enter a query in the Main tab to generate a mindmap.")
 
 # Add this at the end of your main app file, outside of any function
-st.footer("Made with ❤️ for 🐼")
+# st.footer("Made with ❤️ for 🐼")
