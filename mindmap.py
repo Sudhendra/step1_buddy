@@ -57,6 +57,14 @@ def load_topic_data(topic: str) -> list:
     with open(file_path, 'r') as f:
         return json.load(f)
 
+@st.cache_data
+def cached_generate_mindmap(query: str) -> str:
+    return generate_mindmap(query)
+
+@st.cache_data
+def cached_generate_analysis(mindmap_content: str, topic_data: list) -> str:
+    return generate_analysis(mindmap_content, topic_data)
+
 def mindmap_tab_content():
     st.header("Mindmap")
     
@@ -67,28 +75,29 @@ def mindmap_tab_content():
         # Create a progress bar
         progress_bar = st.progress(0)
         
-        mindmap = generate_mindmap(query)
+        # Generate the mindmap using the cached function
+        mindmap = cached_generate_mindmap(query)
         
         # Simulate progress while generating the mindmap
         for i in range(100):
             # Update progress bar
             progress_bar.progress(i + 1)
-            time.sleep(0.05)
+            time.sleep(0.01)  # Reduced sleep time for faster appearance
         
         # Display the generated mindmap
-        with st.expander("View Mindmap"):
+        with st.expander("View Mindmap", expanded=True):
             display_mindmap(mindmap)
         
         # Load topic data
         topic = st.session_state.get('topic_selectbox', 'immunology')  # Default to 'immunology' if not set
         topic_data = load_topic_data(topic)
         
-        # Generate and display the analysis
+        # Generate and display the analysis using the cached function
         st.subheader("Analysis")
         with st.spinner("Generating analysis..."):
-            analysis = generate_analysis(mindmap, topic_data)
+            analysis = cached_generate_analysis(mindmap, topic_data)
             
-        with st.expander("View Analysis"):
+        with st.expander("View Analysis", expanded=True):
             st.markdown(analysis)
         
         # Remove the progress bar
@@ -97,4 +106,4 @@ def mindmap_tab_content():
         st.write("Please enter a query in the Main tab to generate a mindmap.")
 
 # Add this at the end of your main app file, outside of any function
-# st.footer("Made with ❤️ for 🐼")
+st.footer("Made with ❤️ for 🐼")
