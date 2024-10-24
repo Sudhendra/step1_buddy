@@ -51,7 +51,7 @@ else:
     print("FIREBASE_KEY environment variable not found")
 
 # Set Streamlit page config
-st.set_page_config(page_title="Step 1 Buddy", page_icon="⚕️", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="Step Zero", page_icon="⚕️", layout="wide", initial_sidebar_state="expanded")
 st.markdown("""
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:true});</script>
