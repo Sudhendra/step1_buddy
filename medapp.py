@@ -121,7 +121,7 @@ def generate_answer(query: str, context: str) -> str:
                 {"role": "system", "content": "You are a helpful assistant that answers USMLE Step 1 questions based on the provided context. Always ground your answers in the given context and be concise."},
                 {"role": "user", "content": f"Context: {context}\n\nQuestion: {query}\n\nAnswer:"}
             ],
-            max_tokens=150,
+            max_tokens=500,
             n=1,
             stop=None,
             temperature=0.2,
@@ -177,7 +177,8 @@ def extract_frame(video_path: str, timestamp: float) -> Image.Image:
 def main():
     streamlit_analytics.start_tracking(firestore_key_file="firebase-key.json", firestore_collection_name="counts")
     
-    st.title("Step 1 Buddy")
+    st.title("Step Zero")
+    st.subheader("Start your journey to Step 1 success with Step Zero!")
 
     # Add new tabs for disclosures and mindmap
     tab1, tab2, tab3 = st.tabs(["Main", "Mindmap", "Disclosures"])
